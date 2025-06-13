@@ -1,6 +1,13 @@
 import React from 'react'
+import CNavproducts from './components/CNavproducts'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
+const Products = React.lazy(() => import('./components/CNavproducts'))
+const Brands = React.lazy(() => import('./components/Brands'))
+const Category = React.lazy(() => import('./components/Category'))
+const Banners = React.lazy(() => import('./components/Banners'))
+const Offers = React.lazy(() => import('./components/Offers'))
+
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
 
@@ -41,7 +48,7 @@ const Charts = React.lazy(() => import('./views/charts/Charts'))
 // Icons
 const CoreUIIcons = React.lazy(() => import('./views/icons/coreui-icons/CoreUIIcons'))
 const Flags = React.lazy(() => import('./views/icons/flags/Flags'))
-const Brands = React.lazy(() => import('./views/icons/brands/Brands'))
+// const Brands = React.lazy(() => import('./views/icons/brands/Brands'))
 
 // Notifications
 const Alerts = React.lazy(() => import('./views/notifications/alerts/Alerts'))
@@ -54,11 +61,11 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/theme', name: 'Theme', element: Colors, exact: true },
-  { path: '/theme/colors', name: 'Colors', element: Colors },
-  { path: '/theme/typography', name: 'Typography', element: Typography },
-  { path: '/base', name: 'Base', element: Cards, exact: true },
-  { path: '/base/accordion', name: 'Accordion', element: Accordion },
+  { path: '/products', name: 'Products', element: CNavproducts },
+  { path: '/brands', name: 'Brands', element: Brands },
+  { path: '/category', name: 'Category', element: Category },
+  { path: '/banners', name: 'Banner', element: Banners },
+  { path: '/offers', name: 'Offers', element: Offers },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
   { path: '/base/cards', name: 'Cards', element: Cards },
   { path: '/base/carousels', name: 'Carousel', element: Carousels },
