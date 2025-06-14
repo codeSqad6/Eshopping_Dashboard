@@ -54,32 +54,20 @@ const AppHeader = () => {
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
             <CNavLink to="/dashboard" as={NavLink}>
-              Dashboard
+
             </CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">Users</CNavLink>
+            <CNavLink href="#"></CNavLink>
           </CNavItem>
           <CNavItem>
-            <CNavLink href="#">Settings</CNavLink>
+            <CNavLink href="#"></CNavLink>
           </CNavItem>
         </CHeaderNav>
         <CHeaderNav className="ms-auto">
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilBell} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilList} size="lg" />
-            </CNavLink>
-          </CNavItem>
-          <CNavItem>
-            <CNavLink href="#">
-              <CIcon icon={cilEnvelopeOpen} size="lg" />
-            </CNavLink>
-          </CNavItem>
+
+
+
         </CHeaderNav>
         <CHeaderNav>
           <li className="nav-item py-1">
@@ -87,8 +75,9 @@ const AppHeader = () => {
           </li>
           <CDropdown variant="nav-item" placement="bottom-end">
             <CDropdownToggle caret={false}>
+            
               {colorMode === 'dark' ? (
-                <CIcon icon={cilMoon} size="lg" />
+                <CIcon icon={cilMoon} size="lg" className='ms-4'/>
               ) : colorMode === 'auto' ? (
                 <CIcon icon={cilContrast} size="lg" />
               ) : (
@@ -125,15 +114,15 @@ const AppHeader = () => {
               </CDropdownItem>
             </CDropdownMenu>
           </CDropdown>
-          <li className="nav-item py-1">
+          {/* <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
-          </li>
-          <AppHeaderDropdown />
+          </li> */}
+          {/* <AppHeaderDropdown /> */}
         </CHeaderNav>
       </CContainer>
-      <CContainer className="px-4" fluid>
+      {/* <CContainer className="px-4" fluid>
         <AppBreadcrumb />
-      </CContainer>
+      </CContainer> */}
     </CHeader>
   )
 }

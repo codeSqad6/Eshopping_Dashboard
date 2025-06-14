@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 //     <div className="flex">
 //       <div className="flex-1 p-6">
 //         {/* <h1 className="text-2xl font-bold">Welcome TO Products page</h1> */}
-        
+
 //       </div>
 //     </div>
 //   )
@@ -74,8 +74,8 @@ function App() {
       discount: 5,
       status: 'Inactive',
     },
-    
-    
+
+
   ];
 
   const [products, setProducts] = useState(initialProducts);
@@ -98,7 +98,7 @@ function App() {
   const styles = {
     container: { padding: '30px', fontFamily: 'Arial, sans-serif' },
     table: { width: '100%', borderCollapse: 'collapse', marginTop: '20px' },
-    th: { backgroundColor: '#4A90E2', color: 'white', padding: '10px', fontSize: '16px', border: 'none' },
+    th: { backgroundColor: '#4A90E2', color: 'white', padding: '10px', fontSize: '16px', border: 'none',textAlign:'center' },
     td: { padding: '10px', border: 'none', textAlign: 'center' },
     active: { color: 'green', fontWeight: 'bold' },
     inactive: { color: 'red', fontWeight: 'bold' },
@@ -172,7 +172,7 @@ function App() {
               fontWeight: currentPage === index + 1 ? 'bold' : 'normal',
               backgroundColor: currentPage === index + 1 ? '#4A90E2' : 'transparent',
               color: currentPage === index + 1 ? 'white' : 'black',
-             
+
             }}
             onClick={() => setCurrentPage(index + 1)}
           >
