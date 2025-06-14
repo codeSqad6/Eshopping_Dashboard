@@ -1,5 +1,12 @@
 // import React from 'react'
 import React, { useState } from 'react'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
+import './CNavproducts'
+import { useNavigate } from 'react-router-dom'
+import ProductFormDialog from '../dialog form/ProductFormDialog' // تأكد من المسار الصحيح
+
+// import '../dialog form/UserFormDialog' // استدعاء الـ Dialog
+
 // const CNavproducts = () => {
 //   return (
 //     <div className="flex">
@@ -13,6 +20,10 @@ import React, { useState } from 'react'
 
 // export default CNavproducts
 function App() {
+  const navigate = useNavigate()
+  // const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogOpen, setDialogOpen] = useState(false)
+
   const initialProducts = [
     {
       id: 1,
@@ -91,6 +102,15 @@ function App() {
   const indexOfFirst = indexOfLast - itemsPerPage
   const currentProducts = products.slice(indexOfFirst, indexOfLast)
 
+  // const handleAddUser = (newUser) => {
+  //   const newId = rows.length > 0 ? rows[rows.length ].id + 1 : 1
+  //   setProducts([...products, { id: newId, ...newUser }])
+  // }
+  const handleAddProduct = (newProduct) => {
+    const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1
+    setProducts([...products, { id: newId, ...newProduct }])
+  }
+
   const handleEdit = (product) => {
     alert(`Edit clicked for ${product.name}`)
   }
@@ -130,6 +150,13 @@ function App() {
 
   return (
     <div style={styles.container}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <p style={{ fontSize: '20px', fontWeight: 'bold' }}>Add a New Product</p>
+        <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
+          ADD THE PRODUCT
+        </Button>
+      </div>
+
       <table style={styles.table}>
         <thead>
           <tr>
@@ -214,6 +241,17 @@ function App() {
           {'>'}
         </button>
       </div>
+      {/* Dialog مستقل لكن مدمج
+      <UserFormDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleAddUser}
+      /> */}
+      <ProductFormDialog
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleAddProduct}
+      />
     </div>
   )
 }
