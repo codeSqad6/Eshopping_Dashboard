@@ -1,12 +1,12 @@
 import React from 'react'
-import CNavproducts from './components/CNavproducts'
+import CNavproducts from './views/pages/products/mainpro.js/CNavproducts'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
-const Products = React.lazy(() => import('./components/CNavproducts'))
-const Brands = React.lazy(() => import('./components/Brands'))
-const Category = React.lazy(() => import('./components/Category'))
-const Banners = React.lazy(() => import('./components/Banners'))
-const Offers = React.lazy(() => import('./components/Offers'))
+const Products = React.lazy(() => import('./views/pages/products/mainpro.js/CNavproducts'))
+const Brands = React.lazy(() => import('./views/pages/Brands/Brands'))
+const Category = React.lazy(() => import('./views/pages/catagory/Category'))
+const Banners = React.lazy(() => import('./views/pages/banners/Banners'))
+const Offers = React.lazy(() => import('./views/pages/offers/Offers'))
 
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -61,7 +61,7 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
-  { path: '/products', name: 'Products', element: CNavproducts },
+  { path: '/Products', name: 'Products', element: CNavproducts },
   { path: '/brands', name: 'Brands', element: Brands },
   { path: '/category', name: 'Category', element: Category },
   { path: '/banners', name: 'Banner', element: Banners },

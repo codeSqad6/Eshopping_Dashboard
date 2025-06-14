@@ -15,7 +15,7 @@ import {
   cilStar,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
-import CNavproducts from './components/CNavproducts'
+import CNavproducts from './views/pages/products/mainpro.js/CNavproducts'
 
 const _nav = [
   {
