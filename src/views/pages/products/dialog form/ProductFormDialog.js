@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import {
   Dialog,
   DialogTitle,
@@ -14,18 +17,25 @@ import {
 
 const ProductFormDialog = ({ open, onClose, onSave }) => {
   const [product, setProduct] = useState({
-    name: '',
+    nameEn: '',
+    nameAr: '',
+    descriptionEn: '',
+    descriptionAr: '',
     image: '',
     brandId: '',
-    type: '',
+    categoryId: '',
     price: '',
     discount: '',
     status: '',
   })
 
   const brands = [
-    { id: 1, name: 'Dell' },
-    { id: 2, name: 'Nike' },
+    { id: 1, name: 'brand1' },
+    { id: 2, name: 'brand2' },
+  ]
+  const categories = [
+    { id: 1, name: 'Category1' },
+    { id: 2, name: 'Category2' },
   ]
 
   const handleChange = (e) => {
@@ -34,20 +44,24 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
   }
 
   const handleSubmit = () => {
-    if (product.name && product.price && product.image) {
+    if (product.nameEn && product.price && product.image) {
       onSave(product)
       setProduct({
-        name: '',
+        nameEn: '',
+        nameAr: '',
         image: '',
+        descriptionEn: '',
+        descriptionAr: '',
         brandId: '',
-        type: '',
+        categoryId: '',
         price: '',
         discount: '',
         status: '',
       })
       onClose()
+      toast.success(' Product added successfully')
     } else {
-      alert('Please fill required fields')
+      toast.error('Please fill required fields')
     }
   }
 
@@ -56,22 +70,55 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
       <DialogTitle>Add New Product</DialogTitle>
       <DialogContent>
         <TextField
-          label="Product Name"
-          name="name"
+          label="Product Name Arabic"
+          name="nameAr"
           fullWidth
           margin="dense"
-          value={product.name}
+          value={product.nameAr}
           onChange={handleChange}
         />
         <TextField
-          label=""
+          label="Product Name English"
+          name="nameEn"
+          fullWidth
+          margin="dense"
+          value={product.nameEn}
+          onChange={handleChange}
+        />
+        <TextField
+          className="mt-4"
+          label="Upload Image"
           type="file"
           name="image"
           fullWidth
           margin="dense"
           value={product.image}
           onChange={handleChange}
+          InputLabelProps={{ shrink: true }}
         />
+
+        <TextField
+          label="Description English"
+          name="descriptionEn"
+          fullWidth
+          margin="dense"
+          multiline
+          rows={4}
+          value={product.descriptionEn}
+          onChange={handleChange}
+        />
+
+        <TextField
+          label="Description Arabic"
+          name="descriptionAr"
+          fullWidth
+          margin="dense"
+          multiline
+          rows={4}
+          value={product.descriptionAr}
+          onChange={handleChange}
+        />
+
         {/* <TextField
           label="Brand"
           name="brand"
@@ -80,7 +127,7 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
           value={product.brand}
           onChange={handleChange}
         /> */}
-        <FormControl fullWidth margin="normal">
+        {/* <FormControl fullWidth margin="normal">
           <InputLabel id="brand-label">Brand</InputLabel>
           <Select
             labelId="brand-label"
@@ -103,9 +150,45 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
           name="type"
           fullWidth
           margin="dense"
-          value={product.type}
+          value={product.categoryId}
           onChange={handleChange}
-        />
+        /> */}
+        <TextField
+          select
+          label="Select a brand"
+          name="brandId"
+          fullWidth
+          margin="normal"
+          value={product.brandId}
+          onChange={(e) => setProduct({ ...product, brandId: e.target.value })}
+          SelectProps={{ native: true }}
+        >
+          <option value=""></option>
+          {brands.map((brand) => (
+            <option key={brand.id} value={brand.id}>
+              {brand.name}
+            </option>
+          ))}
+        </TextField>
+
+        <TextField
+          select
+          label="Select a category"
+          name="categoryId"
+          fullWidth
+          margin="normal"
+          value={product.categoryId}
+          onChange={(e) => setProduct({ ...product, categoryId: e.target.value })}
+          SelectProps={{ native: true }}
+        >
+          <option value=""></option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>
+              {cat.name}
+            </option>
+          ))}
+        </TextField>
+
         <TextField
           label="Price"
           name="price"
@@ -132,19 +215,20 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
           value={product.status}
           onChange={handleChange}
         /> */}
-        <FormControl fullWidth margin="normal">
-          <InputLabel id="status-label">Status</InputLabel>
-          <Select
-            labelId="status-label"
-            id="status"
-            value={product.status}
-            onChange={(e) => setProduct({ ...product, status: e.target.value })}
-            label="Status"
-          >
-            <MenuItem value="Active">Active</MenuItem>
-            <MenuItem value="Inactive">Inactive</MenuItem>
-          </Select>
-        </FormControl>
+        <TextField
+          select
+          label="Select status"
+          name="status"
+          fullWidth
+          margin="normal"
+          value={product.status}
+          onChange={(e) => setProduct({ ...product, status: e.target.value })}
+          SelectProps={{ native: true }}
+        >
+          <option value=""></option>
+          <option value="Active">Active</option>
+          <option value="Inactive">Inactive</option>
+        </TextField>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>

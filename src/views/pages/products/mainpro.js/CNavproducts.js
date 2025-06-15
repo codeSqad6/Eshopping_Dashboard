@@ -1,13 +1,16 @@
 // import React from 'react'
 import React, { useState } from 'react'
-import './styleproduct.css';
+import './styleproduct.css'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
 import './CNavproducts'
 import { useNavigate } from 'react-router-dom'
-import ProductFormDialog from '../dialog form/ProductFormDialog'; // تأكد من المسار الصحيح
-import EditProductDialog from '../dialog form/EditFormDialog '; // تأكد من المسار الصحيح
-
+import ProductFormDialog from '../dialog form/ProductFormDialog' // تأكد من المسار الصحيح
+import EditProductDialog from '../dialog form/EditFormDialog ' // تأكد من المسار الصحيح
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 // import '../dialog form/UserFormDialog' // استدعاء الـ Dialog
+import Category from './../../catagory/Category'
+import DeleteConfirmDialog from '../delete_dialog/DeleteDialog'
 
 // const CNavproducts = () => {
 //   return (
@@ -26,72 +29,97 @@ function App() {
   // const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
   const [isEditOpen, setIsEditOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
+  const [productToDelete, setProductToDelete] = useState(null)
   const [selectedProduct, setSelectedProduct] = useState(null)
   const initialProducts = [
     {
       id: 1,
-      name: 'Laptop',
+      nameEn: 'Laptop',
+      nameAr: 'لابتوب',
       image:
         'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
       brandId: 1,
-      type: 'Electronics',
+      categoryId: 2,
       price: 1200,
       discount: 10,
+      descriptionEn: 'descriptionEn ',
+      descriptionAr: 'descriptionAr',
       status: 'Active',
     },
     {
       id: 2,
-      name: 'T-Shirt',
+      nameEn: 'T-Shirt',
+      nameAr: 'تيشيرت',
       image:
         'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
       brandId: 2,
-      type: 'Clothing',
+      categoryId: 1,
+
       price: 50,
       discount: 5,
+      descriptionEn: 'descriptionEn ',
+      descriptionAr: 'descriptionAr',
       status: 'Inactive',
     },
     {
       id: 3,
-      name: 'Laptop',
+      nameEn: 'Laptop',
+      nameAr: 'لابتوب',
       image:
         'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
       brandId: 1,
-      type: 'Electronics',
+      categoryId: 1,
+
       price: 1300,
       discount: 10,
+      descriptionEn: 'descriptionEn ',
+      descriptionAr: 'descriptionAr',
       status: 'Active',
     },
     {
       id: 4,
-      name: 'T-Shirt',
+      nameEn: 'T-Shirt',
+      nameAr: 'تيشيرت',
       image:
         'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
       brandId: 2,
-      type: 'Clothing',
+      categoryId: 1,
+
       price: 100,
+      descriptionEn: 'descriptionEn ',
+      descriptionAr: 'descriptionAr',
       discount: 5,
       status: 'Inactive',
     },
     {
       id: 5,
-      name: 'Laptop',
+      nameEn: 'Laptop',
+      nameAr: 'لابتوب',
       image:
         'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
       brandId: 1,
-      type: 'Electronics',
+      categoryId: 2,
+
       price: 1400,
       discount: 10,
+      descriptionEn: 'descriptionEn ',
+      descriptionAr: 'descriptionAr',
       status: 'Active',
     },
     {
       id: 6,
-      name: 'T-Shirt',
+      nameEn: 'T-Shirt',
+      nameAr: 'تيشيرت',
       image:
         'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
       brandId: 2,
-      type: 'Clothing',
+      categoryId: 1,
+
       price: 150,
       discount: 5,
+      descriptionEn: 'descriptionEn ',
+      descriptionAr: 'descriptionAr',
       status: 'Inactive',
     },
   ]
@@ -114,18 +142,25 @@ function App() {
     setProducts([...products, { id: newId, ...newProduct }])
   }
   const handleEditProduct = (updatedProduct) => {
-    setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p))
+    setProducts(products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)))
   }
 
-  const handleDelete = (id) => {
-    setProducts(products.filter((p) => p.id !== id))
+  const handleDeleteConfirm = () => {
+    setProducts(products.filter((p) => p.id !== productToDelete.id))
+    setDeleteDialogOpen(false)
+    setProductToDelete(null)
+    toast.success(' Product deleted successfully')
   }
-
 
   const brands = [
     { id: 1, name: 'Dell' },
     { id: 2, name: 'Nike' },
   ]
+  const categories = [
+    { id: 1, name: 'cat1' },
+    { id: 2, name: 'cat2' },
+  ]
+  console.log(currentProducts, 'currentProducts')
 
   return (
     <div className="container">
@@ -135,12 +170,12 @@ function App() {
           ADD THE PRODUCT
         </Button>
       </div>
-
       <table className="product_table">
         <thead>
           <tr>
             <th>Image</th>
-            <th>Name</th>
+            <th>NameEn</th>
+            <th>NameAr</th>
             <th>Brand</th>
             <th>Category</th>
             <th>Price$</th>
@@ -156,26 +191,34 @@ function App() {
               <td>
                 <img className="image" src={p.image} alt={p.name} />
               </td>
-              <td>{p.name}</td>
+              <td>{p.nameEn}</td>
+              <td>{p.nameAr}</td>
               <td>{brands.find((b) => b.id === p.brandId)?.name || 'N/A'}</td>
-              <td>{p.type}</td>
+              <td>{categories.find((c) => c.id === p.categoryId)?.name || 'N/A'}</td>
               <td>{p.price}</td>
               <td>{p.discount}</td>
               <td>
-                <span className={p.status === 'Active' ? 'active' : 'inactive'}>
-                  {p.status}
-                </span>
+                <span className={p.status === 'Active' ? 'active' : 'inactive'}>{p.status}</span>
               </td>
               <td>
-                <button className="button editButton" onClick={() => {
-                  setSelectedProduct(p)
-                  setIsEditOpen(true)
-                }}>
+                <button
+                  className="button editButton"
+                  onClick={() => {
+                    setSelectedProduct(p)
+                    setIsEditOpen(true)
+                  }}
+                >
                   <i className="fas fa-edit"></i>
                 </button>
               </td>
               <td>
-                <button className="button deleteButton" onClick={() => handleDelete(p.id)}>
+                <button
+                  className="button deleteButton"
+                  onClick={() => {
+                    setProductToDelete(p)
+                    setDeleteDialogOpen(true)
+                  }}
+                >
                   <i className="fas fa-trash"></i>
                 </button>
               </td>
@@ -194,16 +237,13 @@ function App() {
         </button>
 
         {[...Array(totalPages)].map((_, index) => (
-         <button
-         key={index}
-         className={`pageBtn ${
-           currentPage === index + 1 ? 'pageBtnActive' : 'pageBtnInactive'
-         }`}
-         onClick={() => setCurrentPage(index + 1)}
-       >
-         {index + 1}
-       </button>
-       
+          <button
+            key={index}
+            className={`pageBtn ${currentPage === index + 1 ? 'pageBtnActive' : 'pageBtnInactive'}`}
+            onClick={() => setCurrentPage(index + 1)}
+          >
+            {index + 1}
+          </button>
         ))}
 
         <button
@@ -214,7 +254,7 @@ function App() {
           {'>'}
         </button>
       </div>
-   {/* Dialog مستقل لكن مدمج
+      {/* Dialog مستقل لكن مدمج
       <UserFormDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
@@ -225,13 +265,18 @@ function App() {
         onClose={() => setDialogOpen(false)}
         onSave={handleAddProduct}
       />
-    <EditProductDialog
+      <EditProductDialog
         open={isEditOpen}
         onClose={() => setIsEditOpen(false)}
         onSave={handleEditProduct}
         initialData={selectedProduct}
       />
-
+      <DeleteConfirmDialog
+        open={deleteDialogOpen}
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDeleteConfirm}
+        product={productToDelete}
+      />
     </div>
   )
 }
