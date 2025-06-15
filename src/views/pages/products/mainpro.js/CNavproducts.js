@@ -1,9 +1,11 @@
 // import React from 'react'
 import React, { useState } from 'react'
+import './styleproduct.css';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
 import './CNavproducts'
 import { useNavigate } from 'react-router-dom'
-import ProductFormDialog from '../dialog form/ProductFormDialog' // تأكد من المسار الصحيح
+import ProductFormDialog from '../dialog form/ProductFormDialog'; // تأكد من المسار الصحيح
+import EditProductDialog from '../dialog form/EditFormDialog '; // تأكد من المسار الصحيح
 
 // import '../dialog form/UserFormDialog' // استدعاء الـ Dialog
 
@@ -23,7 +25,8 @@ function App() {
   const navigate = useNavigate()
   // const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogOpen, setDialogOpen] = useState(false)
-
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const initialProducts = [
     {
       id: 1,
@@ -110,100 +113,69 @@ function App() {
     const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1
     setProducts([...products, { id: newId, ...newProduct }])
   }
-
-  const handleEdit = (product) => {
-    alert(`Edit clicked for ${product.name}`)
+  const handleEditProduct = (updatedProduct) => {
+    setProducts(products.map(p => p.id === updatedProduct.id ? updatedProduct : p))
   }
 
   const handleDelete = (id) => {
     setProducts(products.filter((p) => p.id !== id))
   }
 
-  const styles = {
-    container: { padding: '30px', fontFamily: 'Arial, sans-serif' },
-    table: { width: '100%', borderCollapse: 'collapse', marginTop: '20px' },
-    th: {
-      backgroundColor: '#4A90E2',
-      color: 'white',
-      padding: '10px',
-      fontSize: '16px',
-      border: 'none',
-      textAlign: 'center',
-    },
-    td: { padding: '10px', border: 'none', textAlign: 'center' },
-    active: { color: 'green', fontWeight: 'bold' },
-    inactive: { color: 'red', fontWeight: 'bold' },
-    button: {
-      margin: '5px',
-      padding: '8px 12px',
-      cursor: 'pointer',
-      border: 'none',
-      borderRadius: '4px',
-    },
-    addButton: { backgroundColor: '#28a745', color: 'white' },
-    editButton: { backgroundColor: '#ffc107', color: 'black' },
-    deleteButton: { backgroundColor: '#dc3545', color: 'white' },
-    image: { width: '75px', height: '75px' },
-    pagination: { marginTop: '20px', textAlign: 'center' },
-    pageBtn: { margin: '0', padding: '3px 10px', cursor: 'pointer', border: '1px solid #ccc' },
-  }
+
   const brands = [
     { id: 1, name: 'Dell' },
     { id: 2, name: 'Nike' },
   ]
 
   return (
-    <div style={styles.container}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <p style={{ fontSize: '20px', fontWeight: 'bold' }}>Add a New Product</p>
+    <div className="container">
+      <div className="header">
+        <p>Add a New Product</p>
         <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
           ADD THE PRODUCT
         </Button>
       </div>
 
-      <table style={styles.table}>
+      <table className="product_table">
         <thead>
           <tr>
-            <th style={styles.th}>Image</th>
-            <th style={styles.th}>Name</th>
-            <th style={styles.th}>Brand</th>
-            <th style={styles.th}>Category</th>
-            <th style={styles.th}>Price$</th>
-            <th style={styles.th}>Discount%</th>
-            <th style={styles.th}>Status</th>
-            <th style={styles.th}>Edit</th>
-            <th style={styles.th}>Delete</th>
+            <th>Image</th>
+            <th>Name</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Price$</th>
+            <th>Discount%</th>
+            <th>Status</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody>
           {currentProducts.map((p) => (
             <tr key={p.id}>
-              <td style={styles.td}>
-                <img style={styles.image} src={p.image} alt={p.name} />
+              <td>
+                <img className="image" src={p.image} alt={p.name} />
               </td>
-              <td style={styles.td}>{p.name}</td>
-              <td style={styles.td}>{brands.find((b) => b.id === p.brandId)?.name || 'N/A'}</td>
-              <td style={styles.td}>{p.type}</td>
-              <td style={styles.td}>{p.price}</td>
-              <td style={styles.td}>{p.discount}</td>
-              <td style={styles.td}>
-                <span style={p.status === 'Active' ? styles.active : styles.inactive}>
+              <td>{p.name}</td>
+              <td>{brands.find((b) => b.id === p.brandId)?.name || 'N/A'}</td>
+              <td>{p.type}</td>
+              <td>{p.price}</td>
+              <td>{p.discount}</td>
+              <td>
+                <span className={p.status === 'Active' ? 'active' : 'inactive'}>
                   {p.status}
                 </span>
               </td>
-              <td style={styles.td}>
-                <button
-                  style={{ ...styles.button, ...styles.editButton }}
-                  onClick={() => handleEdit(p)}
-                >
+              <td>
+                <button className="button editButton" onClick={() => {
+                  setSelectedProduct(p)
+                  setIsEditOpen(true)
+                }}>
                   <i className="fas fa-edit"></i>
                 </button>
               </td>
-              <td style={styles.td}>
-                <button
-                  style={{ ...styles.button, ...styles.deleteButton }}
-                  onClick={() => handleDelete(p.id)}
-                >
+              <td>
+                <button className="button deleteButton" onClick={() => handleDelete(p.id)}>
                   <i className="fas fa-trash"></i>
                 </button>
               </td>
@@ -212,10 +184,9 @@ function App() {
         </tbody>
       </table>
 
-      {/* Pagination */}
-      <div style={styles.pagination}>
+      <div className="pagination">
         <button
-          style={styles.pageBtn}
+          className="pageBtn"
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
           disabled={currentPage === 1}
         >
@@ -223,29 +194,27 @@ function App() {
         </button>
 
         {[...Array(totalPages)].map((_, index) => (
-          <button
-            key={index}
-            style={{
-              ...styles.pageBtn,
-              fontWeight: currentPage === index + 1 ? 'bold' : 'normal',
-              backgroundColor: currentPage === index + 1 ? '#4A90E2' : 'transparent',
-              color: currentPage === index + 1 ? 'white' : 'black',
-            }}
-            onClick={() => setCurrentPage(index + 1)}
-          >
-            {index + 1}
-          </button>
+         <button
+         key={index}
+         className={`pageBtn ${
+           currentPage === index + 1 ? 'pageBtnActive' : 'pageBtnInactive'
+         }`}
+         onClick={() => setCurrentPage(index + 1)}
+       >
+         {index + 1}
+       </button>
+       
         ))}
 
         <button
-          style={styles.pageBtn}
+          className="pageBtn"
           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={currentPage === totalPages}
         >
           {'>'}
         </button>
       </div>
-      {/* Dialog مستقل لكن مدمج
+   {/* Dialog مستقل لكن مدمج
       <UserFormDialog
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
@@ -256,6 +225,13 @@ function App() {
         onClose={() => setDialogOpen(false)}
         onSave={handleAddProduct}
       />
+    <EditProductDialog
+        open={isEditOpen}
+        onClose={() => setIsEditOpen(false)}
+        onSave={handleEditProduct}
+        initialData={selectedProduct}
+      />
+
     </div>
   )
 }
