@@ -30,7 +30,7 @@ function App() {
       name: 'Laptop',
       image:
         'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-      brand: 'Dell',
+      brandId: 1,
       type: 'Electronics',
       price: 1200,
       discount: 10,
@@ -41,7 +41,7 @@ function App() {
       name: 'T-Shirt',
       image:
         'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-      brand: 'Nike',
+      brandId: 2,
       type: 'Clothing',
       price: 50,
       discount: 5,
@@ -52,7 +52,7 @@ function App() {
       name: 'Laptop',
       image:
         'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-      brand: 'Dell',
+      brandId: 1,
       type: 'Electronics',
       price: 1300,
       discount: 10,
@@ -63,7 +63,7 @@ function App() {
       name: 'T-Shirt',
       image:
         'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-      brand: 'Nike',
+      brandId: 2,
       type: 'Clothing',
       price: 100,
       discount: 5,
@@ -74,7 +74,7 @@ function App() {
       name: 'Laptop',
       image:
         'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-      brand: 'Dell',
+      brandId: 1,
       type: 'Electronics',
       price: 1400,
       discount: 10,
@@ -85,7 +85,7 @@ function App() {
       name: 'T-Shirt',
       image:
         'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-      brand: 'Nike',
+      brandId: 2,
       type: 'Clothing',
       price: 150,
       discount: 5,
@@ -147,6 +147,10 @@ function App() {
     pagination: { marginTop: '20px', textAlign: 'center' },
     pageBtn: { margin: '0', padding: '3px 10px', cursor: 'pointer', border: '1px solid #ccc' },
   }
+  const brands = [
+    { id: 1, name: 'Dell' },
+    { id: 2, name: 'Nike' },
+  ]
 
   return (
     <div style={styles.container}>
@@ -178,7 +182,7 @@ function App() {
                 <img style={styles.image} src={p.image} alt={p.name} />
               </td>
               <td style={styles.td}>{p.name}</td>
-              <td style={styles.td}>{p.brand}</td>
+              <td style={styles.td}>{brands.find((b) => b.id === p.brandId)?.name || 'N/A'}</td>
               <td style={styles.td}>{p.type}</td>
               <td style={styles.td}>{p.price}</td>
               <td style={styles.td}>{p.discount}</td>
