@@ -1,5 +1,6 @@
 // import React from 'react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
 import './styleproduct.css'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
 import './CNavproducts'
@@ -137,10 +138,43 @@ function App() {
   //   const newId = rows.length > 0 ? rows[rows.length ].id + 1 : 1
   //   setProducts([...products, { id: newId, ...newUser }])
   // }
-  const handleAddProduct = (newProduct) => {
-    const newId = products.length > 0 ? products[products.length - 1].id + 1 : 1
-    setProducts([...products, { id: newId, ...newProduct }])
+  
+  
+ const handleAddProduct = async (newProduct) => {
+  try {
+    const formData = new FormData()
+    formData.append('name', newProduct.nameEn)
+    formData.append('nameAr', newProduct.nameAr)
+    formData.append('description', newProduct.descriptionEn)
+    formData.append('descriptionAr', newProduct.descriptionAr)
+    formData.append('price', newProduct.price)
+    formData.append('discount', newProduct.discount)
+    formData.append('status', newProduct.status)
+    formData.append('brandId', newProduct.brandId)
+    formData.append('categoryId', newProduct.categoryId)
+    formData.append('image', newProduct.imageFile) // لازم تكون صورة فعلياً
+
+    const token = localStorage.getItem('token')
+
+    const response = await axios.post(
+      'http://test.smartsto0re.shop/api/Products?',
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    )
+
+    const createdProduct = response.data
+    setProducts((prev) => [...prev, createdProduct])
+    toast.success('Product added and saved to API!')
+  } catch (error) {
+    console.error('Error adding product:', error)
+    toast.error('Failed to add product to API')
   }
+}
   const handleEditProduct = (updatedProduct) => {
     setProducts(products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p)))
   }
