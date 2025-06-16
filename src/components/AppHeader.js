@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
@@ -34,8 +34,13 @@ const AppHeader = () => {
 
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const navigate = useNavigate()
+  const token = sessionStorage.getItem('token')
 
   useEffect(() => {
+    if (!token) {
+      navigate('/login')
+    }
     document.addEventListener('scroll', () => {
       headerRef.current &&
         headerRef.current.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0)
@@ -53,9 +58,7 @@ const AppHeader = () => {
         </CHeaderToggler>
         <CHeaderNav className="d-none d-md-flex">
           <CNavItem>
-            <CNavLink to="/dashboard" as={NavLink}>
-
-            </CNavLink>
+            <CNavLink to="/dashboard" as={NavLink}></CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink href="#"></CNavLink>
@@ -64,20 +67,15 @@ const AppHeader = () => {
             <CNavLink href="#"></CNavLink>
           </CNavItem>
         </CHeaderNav>
-        <CHeaderNav className="ms-auto">
-
-
-
-        </CHeaderNav>
+        <CHeaderNav className="ms-auto"></CHeaderNav>
         <CHeaderNav>
           <li className="nav-item py-1">
             <div className="vr h-100 mx-2 text-body text-opacity-75"></div>
           </li>
           <CDropdown variant="nav-item" placement="bottom-end">
             <CDropdownToggle caret={false}>
-            
               {colorMode === 'dark' ? (
-                <CIcon icon={cilMoon} size="lg" className='ms-4'/>
+                <CIcon icon={cilMoon} size="lg" className="ms-4" />
               ) : colorMode === 'auto' ? (
                 <CIcon icon={cilContrast} size="lg" />
               ) : (

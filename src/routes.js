@@ -1,5 +1,6 @@
 import React from 'react'
 import CNavproducts from './views/pages/products/mainpro.js/CNavproducts'
+import { Navigate } from 'react-router-dom'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Products = React.lazy(() => import('./views/pages/products/mainpro.js/CNavproducts'))
@@ -55,11 +56,14 @@ const Alerts = React.lazy(() => import('./views/notifications/alerts/Alerts'))
 const Badges = React.lazy(() => import('./views/notifications/badges/Badges'))
 const Modals = React.lazy(() => import('./views/notifications/modals/Modals'))
 const Toasts = React.lazy(() => import('./views/notifications/toasts/Toasts'))
+const Login = React.lazy(() => import('./views/pages/login/Login'))
+const RedirectToLogin = React.lazy(() => import('./views/pages/login/RedirectToLogin'))
 
 const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 const routes = [
-  { path: '/', exact: true, name: 'Home' },
+  { path: '/', exact: true, element: RedirectToLogin },
+  { path: '/login', name: 'Login', element: Login },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
   { path: '/Products', name: 'Products', element: CNavproducts },
   { path: '/brands', name: 'Brands', element: Brands },
