@@ -193,8 +193,8 @@ function App() {
               </td>
               <td>{p.nameEn}</td>
               <td>{p.nameAr}</td>
-              <td>{brands.find((b) => b.id === p.brandId)?.name || 'N/A'}</td>
-              <td>{categories.find((c) => c.id === p.categoryId)?.name || 'N/A'}</td>
+              <td>{brands.find((b) => b.id == p.brandId)?.name || 'N/A'}</td>
+              <td>{categories.find((c) => c.id == p.categoryId)?.name || 'N/A'}</td>
               <td>{p.price}</td>
               <td>{p.discount}</td>
               <td>
@@ -273,8 +273,10 @@ function App() {
       />
       <DeleteConfirmDialog
         open={deleteDialogOpen}
+        className="delete-dialog"
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={handleDeleteConfirm}
+
         product={productToDelete}
       />
     </div>

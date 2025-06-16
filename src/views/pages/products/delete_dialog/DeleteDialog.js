@@ -4,7 +4,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/
 
 const DeleteConfirmDialog = ({ open, onClose, onConfirm, product }) => {
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={open} onClose={onClose} className="delete-dialog">
       <DialogTitle>Confirm Deletion</DialogTitle>
       <DialogContent>
         Are you sure you want to delete <strong>{product?.nameEn || 'this product'}</strong>?

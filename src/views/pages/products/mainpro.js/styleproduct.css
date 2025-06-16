@@ -12,8 +12,9 @@
   align-items: center;
 }
 
+
 .header p {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 }
 
@@ -27,7 +28,7 @@
   background-color: #4a90e2;
   color: white;
   padding: 10px;
-  font-size: 16px;
+  font-size: 15px;
   border: none;
   text-align: center;
 }
@@ -35,6 +36,7 @@
 .product_table td {
   padding: 10px;
   border: none;
+  font-size: 17px;
   text-align: center;
 }
 
@@ -91,10 +93,10 @@
     background-color: #4A90E2;
     color: white;
   }
-  
+
   .pageBtnInactive {
     font-weight: normal;
     background-color: transparent;
     color: black;
   }
-  
+
