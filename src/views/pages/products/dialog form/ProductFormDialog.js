@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -38,32 +39,46 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
     { id: 2, name: 'Category2' },
   ]
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
+const handleChange = (e) => {
+  const { name, value, files } = e.target
+  if (name === 'image') {
+    setProduct((prev) => ({ ...prev, image: files[0] }))
+  } else {
     setProduct((prev) => ({ ...prev, [name]: value }))
   }
+}
 
-  const handleSubmit = () => {
-    if (product.nameEn && product.price && product.image) {
-      onSave(product)
-      setProduct({
-        nameEn: '',
-        nameAr: '',
-        image: '',
-        descriptionEn: '',
-        descriptionAr: '',
-        brandId: '',
-        categoryId: '',
-        price: '',
-        discount: '',
-        status: '',
-      })
-      onClose()
-      toast.success(' Product added successfully')
-    } else {
-      toast.error('Please fill required fields')
-    }
+const handleSubmit = async () => {
+  const token = sessionStorage.getItem('token')
+  const formData = new FormData()
+  formData.append('image', product.image)
+  formData.append('nameEn', product.nameEn)
+  formData.append('nameAr', product.nameAr)
+  formData.append('descriptionEn', product.descriptionEn)
+  formData.append('descriptionAr', product.descriptionAr)
+  formData.append('brandId', product.brandId)
+  formData.append('categoryId', product.categoryId)
+  formData.append('price', product.price)
+  formData.append('discount', product.discount)
+  formData.append('status', product.status)
+
+  console.log([...formData.entries()]) // لمراجعة البيانات
+
+  try {
+    const response = await axios.post('http://test.smartsto0re.shop/api/Products', formData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+    toast.success('Product added successfully')
+    onClose()
+  } catch (error) {
+    console.error(error)
+    toast.error('Something went wrong')
   }
+}
+
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -92,9 +107,9 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
           name="image"
           fullWidth
           margin="dense"
-          value={product.image}
           onChange={handleChange}
-          InputLabelProps={{ shrink: true }}
+  InputLabelProps={{ shrink: true }}
+  inputProps={{ accept: 'image/*' }}
         />
 
         <TextField
