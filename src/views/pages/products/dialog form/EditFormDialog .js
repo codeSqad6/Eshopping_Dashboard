@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import axios from 'axios'
+
+const API_BASE = 'http://test.smartsto0re.shop/api'
 
 const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
   const [product, setProduct] = useState({
@@ -44,11 +47,94 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
     }
   }
 
-  const handleSubmit = () => {
+  // const handleSubmit = () => {
+  //   if (product.nameEn && product.price) {
+  //     onSave(product)
+  //     onClose()
+  //     toast.success(' Product updated successfully')
+  //   } else {
+  //     toast.error('Please fill required fields')
+  //   }
+  // }
+  // const handleSubmit = async () => {
+  //   if (product.nameEn && product.price) {
+  //     try {
+  //       const formData = new FormData()
+  //       formData.append('id', product.id)
+  //       formData.append('Name', product.nameEn)
+  //       // formData.append('nameAr', product.nameAr)
+  //       formData.append('Price ', product.price)
+  //       formData.append('discount', product.discount)
+  //       formData.append('Description ', product.descriptionEn)
+  //       // formData.append('descriptionAr', product.descriptionAr)
+  //       formData.append('BrandId', product.brandId)
+  //       formData.append('IsActive', product.status)
+  //       formData.append('CategoryId', product.categoryId)
+  //       formData.append('StockQuantity', 5)
+  //       formData.append('SubCategoryId', 'saasaa')
+  //       if (product.image instanceof File) {
+  //         formData.append('Images', product.image)
+  //       }
+  //       console.log(formData)
+  //       const token = sessionStorage.getItem('token') // أو بأي طريقة تخزن بها التوكن
+
+  //       const response = await axios.put(`${API_BASE}/products/${product.id}`, formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //           Authorization: `Bearer ${token}`,
+  //         },
+  //       })
+  //       console.log(response)
+  //       onSave(response.data)
+  //       onClose()
+  //       toast.success('Product updated successfully')
+  //     } catch (error) {
+  //       console.error(error)
+  //       toast.error('Failed to update product')
+  //     }
+  //   } else {
+  //     toast.error('Please fill required fields')
+  //   }
+  // }
+  const handleSubmit = async () => {
     if (product.nameEn && product.price) {
-      onSave(product)
-      onClose()
-      toast.success(' Product updated successfully')
+      try {
+        const token = sessionStorage.getItem('token')
+
+        const formData = new FormData()
+        if (product.image && product.image instanceof File) {
+          formData.append('Images', product.image)
+        }
+
+        const params = {
+          id: product.id,
+          Name: product.nameEn,
+          Price: product.price,
+          // discount: product.discount,
+          Description: product.descriptionEn,
+          BrandId: product.brandId,
+          IsActive: product.status,
+          CategoryId: product.categoryId,
+          StockQuantity: 5,
+          SubCategoryId: 'saasaa',
+        }
+        console.log(params)
+        const response = await axios.put(`${API_BASE}/products/${product.id}`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            Authorization: `Bearer ${token}`,
+          },
+          params: params,
+        })
+
+        console.log(response)
+        onSave(response.data)
+        onClose()
+        toast.success('Product updated successfully')
+      } catch (error) {
+        console.error(error)
+        toast.error('Failed to update product')
+      }
     } else {
       toast.error('Please fill required fields')
     }
@@ -175,8 +261,8 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
           SelectProps={{ native: true }}
         >
           <option value="">Select status</option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
         </TextField>
       </DialogContent>
       <DialogActions>

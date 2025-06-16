@@ -276,7 +276,6 @@ function App() {
         className="delete-dialog"
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={handleDeleteConfirm}
-
         product={productToDelete}
       />
     </div>
