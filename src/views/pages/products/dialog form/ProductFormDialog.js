@@ -15,7 +15,7 @@ import {
   InputLabel,
   FormControl,
 } from '@mui/material'
-
+// const API_url='http://test.smartsto0re.shop/api/Products?'
 const ProductFormDialog = ({ open, onClose, onSave }) => {
   const [product, setProduct] = useState({
     nameEn: '',
@@ -39,43 +39,60 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
     { id: 2, name: 'Category2' },
   ]
 
-const handleChange = (e) => {
-  const { name, value, files } = e.target
-  if (name === 'image') {
-    setProduct((prev) => ({ ...prev, image: files[0] }))
-  } else {
-    setProduct((prev) => ({ ...prev, [name]: value }))
-  }
-}
+
+ const handleChange = (e) => {
+  const { name, value, type, files } = e.target;
+
+  setProduct((prev) => ({
+    ...prev,
+    [name]: type === 'file' ? files[0] : value,
+  }));
+};
 
 const handleSubmit = async () => {
-  const token = sessionStorage.getItem('token')
-  const formData = new FormData()
-  formData.append('image', product.image)
-  formData.append('nameEn', product.nameEn)
-  formData.append('nameAr', product.nameAr)
-  formData.append('descriptionEn', product.descriptionEn)
-  formData.append('descriptionAr', product.descriptionAr)
-  formData.append('brandId', product.brandId)
-  formData.append('categoryId', product.categoryId)
-  formData.append('price', product.price)
-  formData.append('discount', product.discount)
-  formData.append('status', product.status)
+  if (product.nameEn && product.price) {
+    try {
+      const token = sessionStorage.getItem('token')
 
-  console.log([...formData.entries()]) // لمراجعة البيانات
+      const formData = new FormData()
 
-  try {
-    const response = await axios.post('http://test.smartsto0re.shop/api/Products', formData, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    toast.success('Product added successfully')
-    onClose()
-  } catch (error) {
-    console.error(error)
-    toast.error('Something went wrong')
+      // 👇 التأكد من إرسال الصورة فقط لو كانت ملف فعلي
+      if (product.image && product.image instanceof File) {
+        formData.append('Images', product.image)
+      }
+
+      // ✅ إضافة كل البيانات إلى formData
+      const params = {
+          Name: product.nameEn,
+          Price: product.price,
+          // discount: product.discount,
+          Description: product.descriptionEn,
+          BrandId: product.brandId,
+          IsActive: product.status,
+          CategoryId: product.categoryId,
+          StockQuantity: 5,
+          SubCategoryId: '5',
+        }
+          
+      // إرسال الطلب
+      const response = await axios.post(`http://test.smartsto0re.shop/api/Products`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${token}`,
+        },
+           params: params,
+      })
+
+      console.log(response)
+      onSave(response.data)
+      onClose()
+      toast.success('Product added successfully')
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to add product')
+    }
+  } else {
+    toast.error('Please fill required fields')
   }
 }
 
@@ -107,9 +124,8 @@ const handleSubmit = async () => {
           name="image"
           fullWidth
           margin="dense"
-          onChange={handleChange}
+       onChange={handleChange}
   InputLabelProps={{ shrink: true }}
-  inputProps={{ accept: 'image/*' }}
         />
 
         <TextField
@@ -241,8 +257,8 @@ const handleSubmit = async () => {
           SelectProps={{ native: true }}
         >
           <option value=""></option>
-          <option value="Active">Active</option>
-          <option value="Inactive">Inactive</option>
+          <option value="true">Active</option>
+          <option value="false">Inactive</option>
         </TextField>
       </DialogContent>
       <DialogActions>
