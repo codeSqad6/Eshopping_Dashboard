@@ -21,12 +21,12 @@ const DeleteCatagoryDialog = ({ open, onClose, onConfirm, Catagory }) => {
         },
       )
 
-      toast.success('Catagory deleted successfully')
+      toast.success('Brand deleted successfully')
       onConfirm(Catagory.id)
       onClose()
     } catch (error) {
       console.error('❌ Error deleting Catagory:', error)
-      toast.error('Failed to delete Catagory')
+      toast.error(error)
     }
   }
 

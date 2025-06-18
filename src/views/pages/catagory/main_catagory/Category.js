@@ -25,7 +25,7 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
 
-  const totalPages = Math.ceil(Catagories.length / itemsPerPage)
+  const totalPages = Math.ceil(Catagories?.length / itemsPerPage)
   const indexOfLast = currentPage * itemsPerPage
   const indexOfFirst = indexOfLast - itemsPerPage
   const currentCatagories = Catagories.slice(indexOfFirst, indexOfLast)
