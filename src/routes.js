@@ -4,7 +4,7 @@ import { Navigate } from 'react-router-dom'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Products = React.lazy(() => import('./views/pages/products/mainpro.js/CNavproducts'))
-const Brands = React.lazy(() => import('./views/pages/Brands/Brands'))
+const Brands = React.lazy(() => import('./views/pages/Brands/mainbrand.js/Brands'))
 const Category = React.lazy(() => import('./views/pages/catagory/Category'))
 const Banners = React.lazy(() => import('./views/pages/banners/Banners'))
 const Offers = React.lazy(() => import('./views/pages/offers/Offers'))
