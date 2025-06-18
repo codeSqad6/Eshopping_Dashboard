@@ -26,7 +26,7 @@ const DeleteCatagoryDialog = ({ open, onClose, onConfirm, Catagory }) => {
       onClose()
     } catch (error) {
       console.error('❌ Error deleting Catagory:', error)
-      toast.error(error)
+      toast.error(error.message)
     }
   }
 
@@ -34,7 +34,7 @@ const DeleteCatagoryDialog = ({ open, onClose, onConfirm, Catagory }) => {
     <Dialog open={open} onClose={onClose} className="delete-dialog">
       <DialogTitle>Confirm Deletion</DialogTitle>
       <DialogContent>
-        Are you sure you want to delete <strong>{Catagory?.nameEn || 'this Catagory'}</strong>?
+        Are you sure you want to delete <strong>{Catagory?.name || 'this Catagory'}</strong>?
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="inherit">

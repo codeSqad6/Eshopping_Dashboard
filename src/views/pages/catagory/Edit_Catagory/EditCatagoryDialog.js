@@ -17,9 +17,9 @@ const EditCatagoryDialog = ({ open, onClose, onSave, initialData }) => {
     if (initialData) {
       setCatagory({
         nameEn: initialData.name || '',
-        nameAr: initialData.nameAr || '',
+        nameAr: initialData.name || '',
         descriptionEn: initialData.description || '',
-        descriptionAr: initialData.descriptionAr || '',
+        descriptionAr: initialData.description || '',
         image: null,
         status: initialData.isActive ? 'true' : 'false',
         id: initialData.id,
@@ -42,20 +42,19 @@ const EditCatagoryDialog = ({ open, onClose, onSave, initialData }) => {
         const formData = new FormData()
         formData.append('Name', Catagory.nameEn)
         formData.append('NameAr', Catagory.nameAr)
-        formData.append('Description', Catagory.descriptionEn)
-        formData.append('DescriptionAr', Catagory.descriptionAr)
-        formData.append('IsActive', Catagory.status === 'true')
+        formData.append('Description', Catagory.descriptionEn || '')
+        formData.append('DescriptionAr', Catagory.descriptionAr || '')
+        formData.append('IsActive', Catagory.status)
         if (Catagory.image instanceof File) {
           formData.append('Image', Catagory.image)
         }
 
         const token = sessionStorage.getItem('token')
         const response = await axios.put(
-          `http://test.smartsto0re.shop/api/Catagories/${Catagory.id}`,
+          `http://test.smartsto0re.shop/api/Categories/${initialData.id}`,
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data',
               Authorization: `Bearer ${token}`,
             },
           },
