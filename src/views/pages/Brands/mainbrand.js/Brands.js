@@ -10,7 +10,7 @@ import EditBrandDialog from '../Edit_Brand/EditBrandDialog ' // تأكد من ا
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 // import '../dialog form/UserFormDialog' // استدعاء الـ Dialog
-import Category from '../../catagory/Category'
+// import Category from '../../catagory/Category'
 import DeleteBrandDialog from '../delete_brand/DeleteDialogbrand'
 
 // const CNavproducts = () => {
@@ -50,7 +50,7 @@ function App() {
   //     nameAr: 'تيشيرت',
   //     image:
   //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-    
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Inactive',
@@ -61,7 +61,7 @@ function App() {
   //     nameAr: 'لابتوب',
   //     image:
   //       'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-    
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Active',
@@ -72,7 +72,7 @@ function App() {
   //     nameAr: 'تيشيرت',
   //     image:
   //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-     
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     discount: 5,
@@ -84,7 +84,7 @@ function App() {
   //     nameAr: 'لابتوب',
   //     image:
   //       'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-     
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Active',
@@ -95,7 +95,7 @@ function App() {
   //     nameAr: 'تيشيرت',
   //     image:
   //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-  
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Inactive',
@@ -110,41 +110,38 @@ function App() {
   const indexOfLast = currentPage * itemsPerPage
   const indexOfFirst = indexOfLast - itemsPerPage
   const currentBrands = Brands.slice(indexOfFirst, indexOfLast)
- useEffect(() => {
-  const fetchBrands = async () => {
-    try {
-      const token = sessionStorage.getItem('token') 
-      const response = await axios.get('http://test.smartsto0re.shop/api/Brands', {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-               },
-      })
+  useEffect(() => {
+    const fetchBrands = async () => {
+      try {
+        const token = sessionStorage.getItem('token')
+        const response = await axios.get('http://test.smartsto0re.shop/api/Brands', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
-      setBrands(response.data) 
-    } catch (error) {
-      console.error('❌ Error fetching brands:', error)
-      toast.error('Failed to bring the brands.')
+        setBrands(response.data)
+      } catch (error) {
+        console.error('❌ Error fetching brands:', error)
+        toast.error('Failed to bring the brands.')
+      }
     }
-  }
 
-  fetchBrands()
-}, [])
+    fetchBrands()
+  }, [])
 
   const handleAddBrands = (newBrand) => {
-  setBrands((prevBrands) => [...prevBrands, newBrand])
-}
-
+    setBrands((prevBrands) => [...prevBrands, newBrand])
+  }
 
   const handleEditBrands = (updatedBrand) => {
     setBrands(Brands.map((b) => (b.id === updatedBrand.id ? updatedBrand : b)))
   }
-const handleDeleteBrands = (deletedId) => {
-  setBrands((prev) => prev.filter((b) => b.id !== deletedId))
-  setDeleteDialogOpen(false)
-  setBrandToDelete(null)
-}
-
-
+  const handleDeleteBrands = (deletedId) => {
+    setBrands((prev) => prev.filter((b) => b.id !== deletedId))
+    setDeleteDialogOpen(false)
+    setBrandToDelete(null)
+  }
 
   console.log(currentBrands, 'currentBrands')
 
@@ -171,7 +168,11 @@ const handleDeleteBrands = (deletedId) => {
           {currentBrands.map((b) => (
             <tr key={b.id}>
               <td>
-                <img className="image" src={`http://test.smartsto0re.shop${b.logoUrl}`} alt={b.name} />
+                <img
+                  className="image"
+                  src={`http://test.smartsto0re.shop${b.logoUrl}`}
+                  alt={b.name}
+                />
               </td>
               <td>{b.name}</td>
               <td>{b.nameAr}</td>
@@ -243,14 +244,13 @@ const handleDeleteBrands = (deletedId) => {
         onSave={handleEditBrands}
         initialData={selectedBrand}
       />
-    <DeleteBrandDialog
-  open={deleteDialogOpen}
-  className="delete-dialog"
-  onClose={() => setDeleteDialogOpen(false)}
-  onConfirm={handleDeleteBrands} 
-  Brand={BrandToDelete}
-/>
-
+      <DeleteBrandDialog
+        open={deleteDialogOpen}
+        className="delete-dialog"
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDeleteBrands}
+        Brand={BrandToDelete}
+      />
     </div>
   )
 }

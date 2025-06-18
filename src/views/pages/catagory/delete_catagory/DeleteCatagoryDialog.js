@@ -1,26 +1,32 @@
 import React from 'react'
-import './DeleteBrandDialog.css'
+import './DeleteCatagoryDialog.css'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
-const DeleteBrandDialog = ({ open, onClose, onConfirm, Brand }) => {
+const DeleteCatagoryDialog = ({ open, onClose, onConfirm, Catagory }) => {
+  console.log(Catagory)
+
   const handleDelete = async () => {
     try {
       const token = sessionStorage.getItem('token')
-
-      const response = await axios.delete(`http://test.smartsto0re.shop/api/Brands/${Brand.id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      console.log(Catagory.id, 'cgchgchgch')
+      console.log('hvjhvchjvhvkhvhjcvhchch')
+      const response = await axios.delete(
+        `http://test.smartsto0re.shop/api/Categories/${Catagory.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      })
+      )
 
-      toast.success('Brand deleted successfully')
-      onConfirm(Brand.id)
+      toast.success('Catagory deleted successfully')
+      onConfirm(Catagory.id)
       onClose()
     } catch (error) {
-      console.error('❌ Error deleting brand:', error)
-      toast.error('Failed to delete brand')
+      console.error('❌ Error deleting Catagory:', error)
+      toast.error('Failed to delete Catagory')
     }
   }
 
@@ -28,7 +34,7 @@ const DeleteBrandDialog = ({ open, onClose, onConfirm, Brand }) => {
     <Dialog open={open} onClose={onClose} className="delete-dialog">
       <DialogTitle>Confirm Deletion</DialogTitle>
       <DialogContent>
-        Are you sure you want to delete <strong>{Brand?.nameEn || 'this brand'}</strong>?
+        Are you sure you want to delete <strong>{Catagory?.nameEn || 'this Catagory'}</strong>?
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="inherit">
@@ -42,4 +48,4 @@ const DeleteBrandDialog = ({ open, onClose, onConfirm, Brand }) => {
   )
 }
 
-export default DeleteBrandDialog
+export default DeleteCatagoryDialog

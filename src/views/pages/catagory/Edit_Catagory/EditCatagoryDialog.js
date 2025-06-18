@@ -3,8 +3,8 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } 
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
-const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
-  const [brand, setBrand] = useState({
+const EditCatagoryDialog = ({ open, onClose, onSave, initialData }) => {
+  const [Catagory, setCatagory] = useState({
     nameEn: '',
     nameAr: '',
     descriptionEn: '',
@@ -15,7 +15,7 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
 
   useEffect(() => {
     if (initialData) {
-      setBrand({
+      setCatagory({
         nameEn: initialData.name || '',
         nameAr: initialData.nameAr || '',
         descriptionEn: initialData.description || '',
@@ -30,28 +30,28 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target
     if (type === 'file') {
-      setBrand((prev) => ({ ...prev, [name]: files[0] }))
+      setCatagory((prev) => ({ ...prev, [name]: files[0] }))
     } else {
-      setBrand((prev) => ({ ...prev, [name]: value }))
+      setCatagory((prev) => ({ ...prev, [name]: value }))
     }
   }
 
   const handleSubmit = async () => {
-    if (brand.nameEn) {
+    if (Catagory.nameEn) {
       try {
         const formData = new FormData()
-        formData.append('Name', brand.nameEn)
-        formData.append('NameAr', brand.nameAr)
-        formData.append('Description', brand.descriptionEn)
-        formData.append('DescriptionAr', brand.descriptionAr)
-        formData.append('IsActive', brand.status === 'true')
-        if (brand.image instanceof File) {
-          formData.append('Image', brand.image)
+        formData.append('Name', Catagory.nameEn)
+        formData.append('NameAr', Catagory.nameAr)
+        formData.append('Description', Catagory.descriptionEn)
+        formData.append('DescriptionAr', Catagory.descriptionAr)
+        formData.append('IsActive', Catagory.status === 'true')
+        if (Catagory.image instanceof File) {
+          formData.append('Image', Catagory.image)
         }
 
         const token = sessionStorage.getItem('token')
         const response = await axios.put(
-          `http://test.smartsto0re.shop/api/Brands/${brand.id}`,
+          `http://test.smartsto0re.shop/api/Catagories/${Catagory.id}`,
           formData,
           {
             headers: {
@@ -61,12 +61,12 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           },
         )
 
-        toast.success('Brand updated successfully')
+        toast.success('Catagory updated successfully')
         onSave(response.data)
         onClose()
       } catch (error) {
         console.error(error)
-        toast.error('Error updating brand')
+        toast.error('Error updating Catagory')
       }
     } else {
       toast.error('Please fill required fields')
@@ -75,22 +75,22 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
-      <DialogTitle>Edit Brand</DialogTitle>
+      <DialogTitle>Edit Catagory</DialogTitle>
       <DialogContent>
         <TextField
-          label="Brand Name Arabic"
+          label="Catagory Name Arabic"
           name="nameAr"
           fullWidth
           margin="dense"
-          value={brand.nameAr}
+          value={Catagory.nameAr}
           onChange={handleChange}
         />
         <TextField
-          label="Brand Name English"
+          label="Catagory Name English"
           name="nameEn"
           fullWidth
           margin="dense"
-          value={brand.nameEn}
+          value={Catagory.nameEn}
           onChange={handleChange}
         />
         <TextField
@@ -109,7 +109,7 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           margin="dense"
           multiline
           rows={2}
-          value={brand.descriptionEn}
+          value={Catagory.descriptionEn}
           onChange={handleChange}
         />
         <TextField
@@ -119,7 +119,7 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           margin="dense"
           multiline
           rows={2}
-          value={brand.descriptionAr}
+          value={Catagory.descriptionAr}
           onChange={handleChange}
         />
         <TextField
@@ -128,7 +128,7 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           name="status"
           fullWidth
           margin="normal"
-          value={brand.status}
+          value={Catagory.status}
           onChange={handleChange}
           SelectProps={{ native: true }}
         >
@@ -146,4 +146,4 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
   )
 }
 
-export default EditBrandDialog
+export default EditCatagoryDialog

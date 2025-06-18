@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
@@ -19,7 +16,7 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
     image: null,
     brandId: '',
     categoryId: '',
-    subCategoryId:'',
+    subCategoryId: '',
     price: '',
     status: '',
     stockQuantity: '',
@@ -90,7 +87,7 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
         const formData = new FormData()
 
         if (product.image instanceof File) {
-          formData.append('Images', product.image) 
+          formData.append('Images', product.image)
         } else {
           toast.error('Please select a valid image')
           return
@@ -101,7 +98,7 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
         formData.append('Description', product.descriptionEn)
         formData.append('DescriptionAr', product.descriptionAr)
         formData.append('Price', product.price.toString())
-        formData.append('StockQuantity', product.stockQuantity?.toString() )
+        formData.append('StockQuantity', product.stockQuantity?.toString())
         formData.append('IsActive', product.status === 'true' ? 'true' : 'false')
         formData.append('CategoryId', product.categoryId)
         formData.append('SubCategoryId', product.subCategoryId)
@@ -208,7 +205,7 @@ const ProductFormDialog = ({ open, onClose, onSave }) => {
             </option>
           ))}
         </TextField>
-         <TextField
+        <TextField
           select
           label="Select a sub Category"
           name="subCategoryId"

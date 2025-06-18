@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './styleproduct.css'
@@ -20,7 +19,7 @@ import { getAllProducts } from '../../../../services/productService'
 import { getAllBrands } from '../../../../services/brandService'
 import { getAllCategories } from '../../../../services/categoryService'
 import { getAllSubCategories } from '../../../../services/subCategory'
-import EditProductDialog from './../dialog form/EditFormDialog ';
+import EditProductDialog from './../dialog form/EditFormDialog '
 
 function App() {
   const navigate = useNavigate()

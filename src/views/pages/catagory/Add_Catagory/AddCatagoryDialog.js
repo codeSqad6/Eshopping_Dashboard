@@ -16,9 +16,9 @@ import {
   InputLabel,
   FormControl,
 } from '@mui/material'
-const API_url = 'http://test.smartsto0re.shop/api/Products?'
-const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
-  const [Brand, setBrand] = useState({
+const API_url = 'http://test.smartsto0re.shop/api/Categories/'
+const AddCatagoryDialog = ({ open, onClose, onSave, initialData }) => {
+  const [Catagory, setCatagory] = useState({
     nameEn: '',
     nameAr: '',
     descriptionEn: '',
@@ -28,7 +28,7 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
 
   useEffect(() => {
     if (initialData) {
-      setBrand({
+      setCatagory({
         id: initialData.id || '',
         nameEn: initialData.nameEn || '',
         nameAr: initialData.nameAr || '',
@@ -43,46 +43,46 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
   const handleChange = (e) => {
     const { name, value, type, files } = e.target
 
-    setBrand((prev) => ({
+    setCatagory((prev) => ({
       ...prev,
       [name]: type === 'file' ? files[0] : value,
     }))
   }
 
   const handleSubmit = async () => {
-    if (Brand.nameEn) {
+    if (Catagory.nameEn) {
       try {
         const token = sessionStorage.getItem('token')
 
         const formData = new FormData()
 
-        if (Brand.image && Brand.image instanceof File) {
-          formData.append('Image', Brand.image)
+        if (Catagory.image && Catagory.image instanceof File) {
+          formData.append('Image', Catagory.image)
         } else {
           toast.error('Please upload a valid image')
           return
         }
 
-        formData.append('Name', Brand.nameEn)
-        formData.append('NameAr', Brand.nameAr)
-        formData.append('Description', Brand.descriptionEn || '')
-        formData.append('DescriptionAr', Brand.descriptionAr || '')
-        formData.append('IsActive', Brand.status)
+        formData.append('Name', Catagory.nameEn)
+        formData.append('NameAr', Catagory.nameAr)
+        formData.append('Description', Catagory.descriptionEn || '')
+        formData.append('DescriptionAr', Catagory.descriptionAr || '')
+        formData.append('IsActive', Catagory.status)
 
-        const response = await axios.post(`http://test.smartsto0re.shop/api/Brands`, formData, {
+        const response = await axios.post(`http://test.smartsto0re.shop/api/Categories`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
         })
 
-        toast.success('Brand added successfully!')
+        toast.success('Catagory added successfully!')
         console.log(response.data)
         onSave(response.data)
         onClose()
       } catch (error) {
         console.error('❌ Error Response:', error.response?.data || error.message)
-        toast.error('Failed to add brand. Check required fields.')
+        toast.error('Failed to add Catagory. Check required fields.')
       }
     } else {
       toast.error('Please fill required fields')
@@ -91,22 +91,22 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
 
   return (
     <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Add New Brand</DialogTitle>
+      <DialogTitle>Add New Catagory</DialogTitle>
       <DialogContent>
         <TextField
-          label="Brand Name Arabic"
+          label="Catagory Name Arabic"
           name="nameAr"
           fullWidth
           margin="dense"
-          value={Brand.nameAr}
+          value={Catagory.nameAr}
           onChange={handleChange}
         />
         <TextField
-          label="Brand Name English"
+          label="Catagory Name English"
           name="nameEn"
           fullWidth
           margin="dense"
-          value={Brand.nameEn}
+          value={Catagory.nameEn}
           onChange={handleChange}
         />
         <TextField
@@ -127,7 +127,7 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
           margin="dense"
           multiline
           rows={4}
-          value={Brand.descriptionEn}
+          value={Catagory.descriptionEn}
           onChange={handleChange}
         />
 
@@ -138,7 +138,7 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
           margin="dense"
           multiline
           rows={4}
-          value={Brand.descriptionAr}
+          value={Catagory.descriptionAr}
           onChange={handleChange}
         />
         <TextField
@@ -147,10 +147,10 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
           name="status"
           fullWidth
           margin="normal"
-          value={Brand.status}
+          value={Catagory.status}
           onChange={(e) => {
             const value = e.target.value === 'true' ? true : false
-            setBrand((prev) => ({ ...prev, status: value }))
+            setCatagory((prev) => ({ ...prev, status: value }))
           }}
           SelectProps={{ native: true }}
         >
@@ -169,4 +169,4 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
   )
 }
 
-export default AddBrandDialog
+export default AddCatagoryDialog
