@@ -12,7 +12,10 @@
   justify-content: space-between;
   align-items: center;
 }
-
+table.Brands_table {
+    width: 100%;
+    margin-top: 20px;
+}
 
 .header p {
   font-size: 18px;

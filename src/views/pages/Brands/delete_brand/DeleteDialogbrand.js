@@ -28,7 +28,7 @@ const DeleteBrandDialog = ({ open, onClose, onConfirm, Brand }) => {
     <Dialog open={open} onClose={onClose} className="delete-dialog">
       <DialogTitle>Confirm Deletion</DialogTitle>
       <DialogContent>
-        Are you sure you want to delete <strong>{Brand?.nameEn || 'this brand'}</strong>?
+        Are you sure you want to delete <strong>{Brand?.name || 'this brand'}</strong>?
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose} color="inherit">
