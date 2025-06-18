@@ -24,9 +24,9 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
     if (initialData) {
       setBrand({
         nameEn: initialData.name || '',
-        nameAr: initialData.nameAr || '',
+        nameAr: initialData.name || '',
         descriptionEn: initialData.description || '',
-        descriptionAr: initialData.descriptionAr || '',
+        descriptionAr: initialData.description || '',
         image: null,
         status: initialData.isActive ? 'true' : 'false',
         id: initialData.id,
