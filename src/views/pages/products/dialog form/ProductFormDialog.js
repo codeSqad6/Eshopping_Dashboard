@@ -1,101 +1,129 @@
-import React, { useState } from 'react'
+
+
+
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
+import { getAllBrands } from '../../../../services/brandService'
+import { getAllCategories } from '../../../../services/categoryService'
+import { getAllSubCategories } from '../../../../services/subCategory'
 
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-} from '@mui/material'
-// const API_url='http://test.smartsto0re.shop/api/Products?'
 const ProductFormDialog = ({ open, onClose, onSave }) => {
   const [product, setProduct] = useState({
     nameEn: '',
     nameAr: '',
     descriptionEn: '',
     descriptionAr: '',
-    image: '',
+    image: null,
     brandId: '',
     categoryId: '',
+    subCategoryId:'',
     price: '',
-    discount: '',
     status: '',
+    stockQuantity: '',
   })
-
-  const brands = [
-    { id: 1, name: 'brand1' },
-    { id: 2, name: 'brand2' },
-  ]
-  const categories = [
-    { id: 1, name: 'Category1' },
-    { id: 2, name: 'Category2' },
-  ]
-
-
- const handleChange = (e) => {
-  const { name, value, type, files } = e.target;
-
-  setProduct((prev) => ({
-    ...prev,
-    [name]: type === 'file' ? files[0] : value,
-  }));
-};
-
-const handleSubmit = async () => {
-  if (product.nameEn && product.price) {
+  const [brands, setBrands] = useState([])
+  const [categories, setCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
+  const fetchBrands = async () => {
     try {
-      const token = sessionStorage.getItem('token')
-
-      const formData = new FormData()
-
-      // 👇 التأكد من إرسال الصورة فقط لو كانت ملف فعلي
-      if (product.image && product.image instanceof File) {
-        formData.append('Images', product.image)
-      }
-
-      // ✅ إضافة كل البيانات إلى formData
-      const params = {
-          Name: product.nameEn,
-          Price: product.price,
-          // discount: product.discount,
-          Description: product.descriptionEn,
-          BrandId: product.brandId,
-          IsActive: product.status,
-          CategoryId: product.categoryId,
-          StockQuantity: 5,
-          SubCategoryId: '5',
-        }
-          
-      // إرسال الطلب
-      const response = await axios.post(`http://test.smartsto0re.shop/api/Products`, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          Authorization: `Bearer ${token}`,
-        },
-           params: params,
-      })
-
-      console.log(response)
-      onSave(response.data)
-      onClose()
-      toast.success('Product added successfully')
+      const data = await getAllBrands()
+      setBrands(data)
+      console.log('brands', brands)
     } catch (error) {
-      console.error(error)
-      toast.error('Failed to add product')
+      console.error('Error fetching products:', error)
     }
-  } else {
-    toast.error('Please fill required fields')
   }
-}
+  const fetchCategories = async () => {
+    try {
+      const data = await getAllCategories()
+      setCategories(data)
+      console.log('categories', categories)
+    } catch (error) {
+      console.error('Error fetching products:', error)
+    }
+  }
+  const fetchSubCategories = async () => {
+    try {
+      const data = await getAllSubCategories()
+      setSubCategories(data)
+      console.log('sub', subCategories)
+    } catch (error) {
+      console.error('Error fetching products:', error)
+    }
+  }
+  useEffect(() => {
+    fetchBrands()
+    fetchCategories()
+    fetchSubCategories()
+  }, [])
+  const onFileSelected = (event) => {
+    const file = event.target.files[0]
+    if (file && file.type.startsWith('image/')) {
+      setProduct((prev) => ({
+        ...prev,
+        image: file,
+      }))
+    } else {
+      setProduct((prev) => ({
+        ...prev,
+        image: null,
+      }))
+      toast.error('Please select a valid image file')
+    }
+  }
 
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setProduct((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const handleSubmit = async () => {
+    if (product.nameEn && product.price) {
+      try {
+        const token = sessionStorage.getItem('token')
+        const formData = new FormData()
+
+        if (product.image instanceof File) {
+          formData.append('Images', product.image) 
+        } else {
+          toast.error('Please select a valid image')
+          return
+        }
+
+        formData.append('Name', product.nameEn)
+        formData.append('NameAr', product.nameAr)
+        formData.append('Description', product.descriptionEn)
+        formData.append('DescriptionAr', product.descriptionAr)
+        formData.append('Price', product.price.toString())
+        formData.append('StockQuantity', product.stockQuantity?.toString() )
+        formData.append('IsActive', product.status === 'true' ? 'true' : 'false')
+        formData.append('CategoryId', product.categoryId)
+        formData.append('SubCategoryId', product.subCategoryId)
+        formData.append('BrandId', product.brandId)
+
+        const response = await axios.post('http://test.smartsto0re.shop/api/Products', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+
+        toast.success('Product added successfully')
+        onSave?.(response.data)
+        onClose()
+      } catch (error) {
+        console.error(error)
+        toast.error('Failed to add product')
+      }
+    } else {
+      toast.error('Please fill required fields')
+    }
+  }
 
   return (
     <Dialog open={open} onClose={onClose}>
@@ -117,15 +145,13 @@ const handleSubmit = async () => {
           value={product.nameEn}
           onChange={handleChange}
         />
-        <TextField
-          className="mt-4"
-          label="Upload Image"
+
+        <label style={{ marginTop: '1rem', display: 'block' }}>Upload Image</label>
+        <input
           type="file"
-          name="image"
-          fullWidth
-          margin="dense"
-       onChange={handleChange}
-  InputLabelProps={{ shrink: true }}
+          accept="image/*"
+          onChange={onFileSelected}
+          style={{ marginBottom: '1rem' }}
         />
 
         <TextField
@@ -138,7 +164,6 @@ const handleSubmit = async () => {
           value={product.descriptionEn}
           onChange={handleChange}
         />
-
         <TextField
           label="Description Arabic"
           name="descriptionAr"
@@ -149,41 +174,6 @@ const handleSubmit = async () => {
           value={product.descriptionAr}
           onChange={handleChange}
         />
-
-        {/* <TextField
-          label="Brand"
-          name="brand"
-          fullWidth
-          margin="dense"
-          value={product.brand}
-          onChange={handleChange}
-        /> */}
-        {/* <FormControl fullWidth margin="normal">
-          <InputLabel id="brand-label">Brand</InputLabel>
-          <Select
-            labelId="brand-label"
-            id="brand"
-            name="brandId"
-            value={product.brandId}
-            onChange={(e) => setProduct({ ...product, brandId: e.target.value })}
-            label="Brand"
-          >
-            {brands.map((brand) => (
-              <MenuItem key={brand.id} value={brand.id}>
-                {brand.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-
-        <TextField
-          label="Catagory"
-          name="type"
-          fullWidth
-          margin="dense"
-          value={product.categoryId}
-          onChange={handleChange}
-        /> */}
         <TextField
           select
           label="Select a brand"
@@ -191,7 +181,7 @@ const handleSubmit = async () => {
           fullWidth
           margin="normal"
           value={product.brandId}
-          onChange={(e) => setProduct({ ...product, brandId: e.target.value })}
+          onChange={handleChange}
           SelectProps={{ native: true }}
         >
           <option value=""></option>
@@ -201,7 +191,6 @@ const handleSubmit = async () => {
             </option>
           ))}
         </TextField>
-
         <TextField
           select
           label="Select a category"
@@ -209,7 +198,7 @@ const handleSubmit = async () => {
           fullWidth
           margin="normal"
           value={product.categoryId}
-          onChange={(e) => setProduct({ ...product, categoryId: e.target.value })}
+          onChange={handleChange}
           SelectProps={{ native: true }}
         >
           <option value=""></option>
@@ -219,7 +208,23 @@ const handleSubmit = async () => {
             </option>
           ))}
         </TextField>
-
+         <TextField
+          select
+          label="Select a sub Category"
+          name="subCategoryId"
+          fullWidth
+          margin="normal"
+          value={product.subCategoryId}
+          onChange={handleChange}
+          SelectProps={{ native: true }}
+        >
+          <option value=""></option>
+          {subCategories.map((sub) => (
+            <option key={sub.id} value={sub.id}>
+              {sub.name}
+            </option>
+          ))}
+        </TextField>
         <TextField
           label="Price"
           name="price"
@@ -230,22 +235,14 @@ const handleSubmit = async () => {
           onChange={handleChange}
         />
         <TextField
-          label="Discount (%)"
-          name="discount"
+          label="stock Quantity "
+          name="stockQuantity"
           type="number"
           fullWidth
           margin="dense"
-          value={product.discount}
+          value={product.stockQuantity}
           onChange={handleChange}
         />
-        {/* <TextField
-          label="Status (Active/Inactive)"
-          name="status"
-          fullWidth
-          margin="dense"
-          value={product.status}
-          onChange={handleChange}
-        /> */}
         <TextField
           select
           label="Select status"
@@ -253,7 +250,7 @@ const handleSubmit = async () => {
           fullWidth
           margin="normal"
           value={product.status}
-          onChange={(e) => setProduct({ ...product, status: e.target.value })}
+          onChange={handleChange}
           SelectProps={{ native: true }}
         >
           <option value=""></option>

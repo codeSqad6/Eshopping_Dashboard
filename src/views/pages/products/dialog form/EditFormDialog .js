@@ -1,147 +1,140 @@
-// components/EditProductDialog.js
 import React, { useEffect, useState } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
 
-const API_BASE = 'http://test.smartsto0re.shop/api'
+import { getAllBrands } from '../../../../services/brandService'
+import { getAllCategories } from '../../../../services/categoryService'
+import { getAllSubCategories } from '../../../../services/subCategory'
 
-const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
+const EditProductDialog = ({ open, onClose, initialData, onSave }) => {
   const [product, setProduct] = useState({
     nameEn: '',
     nameAr: '',
+    descriptionEn: '',
+    descriptionAr: '',
     image: null,
     brandId: '',
     categoryId: '',
-    type: '',
+    subCategoryId: '',
     price: '',
-    descriptionEn: '',
-    descriptionAr: '',
-    discount: '',
     status: '',
+    stockQuantity: '',
   })
 
-  const brands = [
-    { id: 1, name: 'Dell' },
-    { id: 2, name: 'Nike' },
-  ]
-
-  const categories = [
-    { id: 1, name: 'cat1' },
-    { id: 2, name: 'cat2' },
-  ]
+  const [brands, setBrands] = useState([])
+  const [categories, setCategories] = useState([])
+  const [subCategories, setSubCategories] = useState([])
 
   useEffect(() => {
-    if (initialData) {
-      setProduct(initialData)
+    const fetchData = async () => {
+      try {
+        const [brandData, categoryData, subCategoryData] = await Promise.all([
+          getAllBrands(),
+          getAllCategories(),
+          getAllSubCategories(),
+        ])
+        setBrands(brandData)
+        setCategories(categoryData)
+        setSubCategories(subCategoryData)
+      } catch (error) {
+        toast.error('Error fetching data')
+      }
     }
-  }, [initialData])
+    fetchData()
+  }, [])
+
+  useEffect(() => {
+    console.log('Dialog open status:', open)
+    console.log('Product data:', initialData)
+
+    if (open && initialData) {
+      console.log('opened')
+
+      setProduct({
+        nameEn: initialData.name || '',
+        nameAr: initialData.nameAr || initialData.name || '',
+        descriptionEn: initialData.descriptionEn || initialData.description || '',
+        descriptionAr: initialData.descriptionAr || initialData.description || '',
+        image: null,
+        brandId: initialData.brandId || '',
+        categoryId: initialData.categoryId || '',
+        subCategoryId: initialData.subCategoryId || '',
+        price: initialData.price || '',
+        status: initialData.isActive ? 'true' : 'false',
+        stockQuantity: initialData.stockQuantity || '',
+        imageUrls: initialData.imageUrls || [],
+      })
+    }
+  }, [open, initialData])
 
   const handleChange = (e) => {
-    const { name, value, type, files } = e.target
-    if (type === 'file') {
-      setProduct((prev) => ({ ...prev, [name]: files[0] }))
+    const { name, value } = e.target
+    setProduct((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+  }
+
+  const onFileSelected = (event) => {
+    const file = event.target.files[0]
+    if (file && file.type.startsWith('image/')) {
+      setProduct((prev) => ({
+        ...prev,
+        image: file,
+      }))
     } else {
-      setProduct((prev) => ({ ...prev, [name]: value }))
+      toast.error('Please select a valid image')
     }
   }
 
-  // const handleSubmit = () => {
-  //   if (product.nameEn && product.price) {
-  //     onSave(product)
-  //     onClose()
-  //     toast.success(' Product updated successfully')
-  //   } else {
-  //     toast.error('Please fill required fields')
-  //   }
-  // }
-  // const handleSubmit = async () => {
-  //   if (product.nameEn && product.price) {
-  //     try {
-  //       const formData = new FormData()
-  //       formData.append('id', product.id)
-  //       formData.append('Name', product.nameEn)
-  //       // formData.append('nameAr', product.nameAr)
-  //       formData.append('Price ', product.price)
-  //       formData.append('discount', product.discount)
-  //       formData.append('Description ', product.descriptionEn)
-  //       // formData.append('descriptionAr', product.descriptionAr)
-  //       formData.append('BrandId', product.brandId)
-  //       formData.append('IsActive', product.status)
-  //       formData.append('CategoryId', product.categoryId)
-  //       formData.append('StockQuantity', 5)
-  //       formData.append('SubCategoryId', 'saasaa')
-  //       if (product.image instanceof File) {
-  //         formData.append('Images', product.image)
-  //       }
-  //       console.log(formData)
-  //       const token = sessionStorage.getItem('token') // أو بأي طريقة تخزن بها التوكن
-
-  //       const response = await axios.put(`${API_BASE}/products/${product.id}`, formData, {
-  //         headers: {
-  //           'Content-Type': 'multipart/form-data',
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //       })
-  //       console.log(response)
-  //       onSave(response.data)
-  //       onClose()
-  //       toast.success('Product updated successfully')
-  //     } catch (error) {
-  //       console.error(error)
-  //       toast.error('Failed to update product')
-  //     }
-  //   } else {
-  //     toast.error('Please fill required fields')
-  //   }
-  // }
   const handleSubmit = async () => {
-    if (product.nameEn && product.price) {
-      try {
-        const token = sessionStorage.getItem('token')
+    if (!product.nameEn || !product.price) {
+      toast.error('Please fill required fields')
+      return
+    }
 
-        const formData = new FormData()
-        if (product.image && product.image instanceof File) {
-          formData.append('Images', product.image)
-        }
+    try {
+      const token = sessionStorage.getItem('token')
+      const formData = new FormData()
 
-        const params = {
-          id: product.id,
-          Name: product.nameEn,
-          Price: product.price,
-          // discount: product.discount,
-          Description: product.descriptionEn,
-          BrandId: product.brandId,
-          IsActive: product.status,
-          CategoryId: product.categoryId,
-          StockQuantity: 5,
-          SubCategoryId: 'saasaa',
-        }
-        console.log(params)
-        const response = await axios.put(`${API_BASE}/products/${product.id}`, formData, {
+      formData.append('Id', product.id)
+      formData.append('Name', product.nameEn)
+      formData.append('NameAr', product.nameAr)
+      formData.append('Description', product.descriptionEn)
+      formData.append('DescriptionAr', product.descriptionAr)
+      formData.append('Price', product.price.toString())
+      formData.append('StockQuantity', product.stockQuantity?.toString())
+      formData.append('IsActive', product.status === 'true' ? 'true' : 'false')
+      formData.append('CategoryId', product.categoryId)
+      formData.append('SubCategoryId', product.subCategoryId)
+      formData.append('BrandId', product.brandId)
+
+      if (product.image instanceof File) {
+        formData.append('Images', product.image)
+      }
+
+      const response = await axios.put(
+        `http://test.smartsto0re.shop/api/Products/${initialData.id}`,
+        formData,
+        {
           headers: {
-            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`,
           },
-          params: params,
-        })
+        },
+      )
 
-        console.log(response)
-        onSave(response.data)
-        onClose()
-        toast.success('Product updated successfully')
-      } catch (error) {
-        console.error(error)
-        toast.error('Failed to update product')
-      }
-    } else {
-      toast.error('Please fill required fields')
+      toast.success('Product updated successfully')
+      onSave?.(response.data)
+      onClose()
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to update product')
     }
   }
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
+    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>Edit Product</DialogTitle>
       <DialogContent>
         <TextField
@@ -152,7 +145,6 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
           value={product.nameAr}
           onChange={handleChange}
         />
-
         <TextField
           label="Product Name English"
           name="nameEn"
@@ -162,19 +154,47 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
           onChange={handleChange}
         />
 
-        <TextField
-          label="Upload Image"
+        {product.imageUrls?.length > 0 && (
+          <div style={{ marginBottom: '1rem' }}>
+            <img
+              src={`http://test.smartsto0re.shop${product.imageUrls[0]}`}
+              alt="Product"
+              style={{ width: '100px', borderRadius: '6px' }}
+            />
+          </div>
+        )}
+
+        <label style={{ display: 'block', marginTop: '1rem' }}>Upload New Image</label>
+        <input
           type="file"
-          name="image"
-          fullWidth
-          margin="dense"
-          onChange={handleChange}
-          InputLabelProps={{ shrink: true }}
+          accept="image/*"
+          onChange={onFileSelected}
+          style={{ marginBottom: '1rem' }}
         />
 
         <TextField
+          label="Description English"
+          name="descriptionEn"
+          fullWidth
+          margin="dense"
+          multiline
+          rows={3}
+          value={product.descriptionEn}
+          onChange={handleChange}
+        />
+        <TextField
+          label="Description Arabic"
+          name="descriptionAr"
+          fullWidth
+          margin="dense"
+          multiline
+          rows={3}
+          value={product.descriptionAr}
+          onChange={handleChange}
+        />
+        <TextField
           select
-          label="Select a brand"
+          label="Select Brand"
           name="brandId"
           fullWidth
           margin="normal"
@@ -189,10 +209,9 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
             </option>
           ))}
         </TextField>
-
         <TextField
           select
-          label="Select a category"
+          label="Select Category"
           name="categoryId"
           fullWidth
           margin="normal"
@@ -207,7 +226,23 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
             </option>
           ))}
         </TextField>
-
+        <TextField
+          select
+          label="Select SubCategory"
+          name="subCategoryId"
+          fullWidth
+          margin="normal"
+          value={product.subCategoryId}
+          onChange={handleChange}
+          SelectProps={{ native: true }}
+        >
+          <option value=""></option>
+          {subCategories.map((sub) => (
+            <option key={sub.id} value={sub.id}>
+              {sub.name}
+            </option>
+          ))}
+        </TextField>
         <TextField
           label="Price"
           name="price"
@@ -217,42 +252,18 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
           value={product.price}
           onChange={handleChange}
         />
-
         <TextField
-          label="Discount (%)"
-          name="discount"
+          label="Stock Quantity"
+          name="stockQuantity"
           type="number"
           fullWidth
           margin="dense"
-          value={product.discount}
+          value={product.stockQuantity}
           onChange={handleChange}
         />
-
-        <TextField
-          label="Description English"
-          name="descriptionEn"
-          fullWidth
-          margin="dense"
-          multiline
-          rows={4}
-          value={product.descriptionEn}
-          onChange={handleChange}
-        />
-
-        <TextField
-          label="Description Arabic"
-          name="descriptionAr"
-          fullWidth
-          margin="dense"
-          multiline
-          rows={4}
-          value={product.descriptionAr}
-          onChange={handleChange}
-        />
-
         <TextField
           select
-          label="Select status"
+          label="Status"
           name="status"
           fullWidth
           margin="normal"
@@ -260,15 +271,15 @@ const EditProductDialog = ({ open, onClose, onSave, initialData }) => {
           onChange={handleChange}
           SelectProps={{ native: true }}
         >
-          <option value="">Select status</option>
+          <option value=""></option>
           <option value="true">Active</option>
           <option value="false">Inactive</option>
         </TextField>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button onClick={handleSubmit} variant="contained">
-          Save Changes
+        <Button onClick={handleSubmit} variant="contained" color="primary">
+          Save
         </Button>
       </DialogActions>
     </Dialog>
