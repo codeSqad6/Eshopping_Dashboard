@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Button,
-  TextField,
-} from '@mui/material'
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
 import { getAllCategories } from '../../../../services/categoryService'
 import { toast } from 'react-toastify'
 import axios from 'axios'
@@ -19,23 +12,20 @@ const EditSub_CatDialog = ({ open, onClose, onSave, initialData }) => {
     descriptionAr: '',
     image: null,
     status: 'true',
-    imageUrl: '',
     id: '',
   })
   const [categories, setCategories] = useState([])
-    useEffect(() => {
-      const fetchData = async () => {
-        try {
-          const [categoryData] = await Promise.all([
-            getAllCategories()
-          ])
-          setCategories(categoryData)
-        } catch (error) {
-          toast.error('Error fetching data')
-        }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [categoryData] = await Promise.all([getAllCategories()])
+        setCategories(categoryData)
+      } catch (error) {
+        toast.error('Error fetching data')
       }
-      fetchData()
-    }, [])
+    }
+    fetchData()
+  }, [])
   useEffect(() => {
     if (open && initialData) {
       setSubCat({
@@ -44,10 +34,10 @@ const EditSub_CatDialog = ({ open, onClose, onSave, initialData }) => {
         categoryId: initialData.categoryId || initialData.categoryId || '',
         descriptionEn: initialData.descriptionEn || initialData.description || '',
         descriptionAr: initialData.descriptionAr || initialData.description || '',
-         categoryId: initialData.categoryId || '',
-        image: null,
+        categoryId: initialData.categoryId || '',
+        image: initialData.imageUrl || '',
         status: initialData.isActive ? 'true' : 'false',
-        imageUrl: initialData.imageUrl || '',
+        // imageUrl: ,
         id: initialData.id || '',
       })
     }
@@ -86,7 +76,7 @@ const EditSub_CatDialog = ({ open, onClose, onSave, initialData }) => {
       formData.append('CategoryId', subCat.categoryId)
       formData.append('Description', subCat.descriptionEn)
       formData.append('DescriptionAr', subCat.descriptionAr)
-       formData.append('CategoryId', subCat.categoryId)
+      formData.append('CategoryId', subCat.categoryId)
       formData.append('IsActive', subCat.status === 'true' ? 'true' : 'false')
 
       if (subCat.image instanceof File) {
@@ -102,7 +92,7 @@ const EditSub_CatDialog = ({ open, onClose, onSave, initialData }) => {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data',
           },
-        }
+        },
       )
 
       toast.success('Sub Category updated successfully')
@@ -181,7 +171,7 @@ const EditSub_CatDialog = ({ open, onClose, onSave, initialData }) => {
           value={subCat.descriptionAr}
           onChange={handleChange}
         />
- <TextField
+        <TextField
           select
           label="Select Category"
           name="categoryId"

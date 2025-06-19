@@ -38,7 +38,7 @@ function App() {
   //     nameAr: 'تيشيرت',
   //     image:
   //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-    
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Inactive',
@@ -49,7 +49,7 @@ function App() {
   //     nameAr: 'لابتوب',
   //     image:
   //       'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-    
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Active',
@@ -60,7 +60,7 @@ function App() {
   //     nameAr: 'تيشيرت',
   //     image:
   //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-     
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     discount: 5,
@@ -72,7 +72,7 @@ function App() {
   //     nameAr: 'لابتوب',
   //     image:
   //       'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-     
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Active',
@@ -83,7 +83,7 @@ function App() {
   //     nameAr: 'تيشيرت',
   //     image:
   //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-  
+
   //     descriptionEn: 'descriptionEn ',
   //     descriptionAr: 'descriptionAr',
   //     status: 'Inactive',
@@ -101,14 +101,14 @@ function App() {
  useEffect(() => {
   const fetchBrands = async () => {
     try {
-      const token = sessionStorage.getItem('token') 
+      const token = sessionStorage.getItem('token')
       const response = await axios.get('http://test.smartsto0re.shop/api/Brands', {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`,
                },
       })
 
-      setBrands(response.data) 
+      setBrands(response.data)
     } catch (error) {
       console.error('❌ Error fetching brands:', error)
       toast.error('Failed to bring the brands.')
@@ -141,7 +141,7 @@ const handleDeleteBrands = (deletedId) => {
       <div className="header">
         <p>Add a New Brands</p>
         <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-          ADD THE Brands
+          Add Brand
         </Button>
       </div>
       <table className="Brands_table">
@@ -235,7 +235,7 @@ const handleDeleteBrands = (deletedId) => {
   open={deleteDialogOpen}
   className="delete-dialog"
   onClose={() => setDeleteDialogOpen(false)}
-  onConfirm={handleDeleteBrands} 
+  onConfirm={handleDeleteBrands}
   Brand={BrandToDelete}
 />
 

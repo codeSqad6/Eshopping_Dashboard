@@ -188,7 +188,7 @@ function App() {
           onClick={() => setDialogOpen(true)}
           disabled={loading.add}
         >
-          {loading.add ? <CircularProgress size={24} color="inherit" /> : 'ADD THE PRODUCT'}
+          {loading.add ? <CircularProgress size={24} color="inherit" /> : 'Add Product'}
         </Button>
       </div>
 

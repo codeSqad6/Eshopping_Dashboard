@@ -246,7 +246,7 @@ function App() {
       <div className="header">
         <p>Add a New Category</p>
         <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-          ADD CATEGORY
+          Add Category
         </Button>
       </div>
 
