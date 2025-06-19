@@ -1,5 +1,13 @@
+// components/EditProductDialog.js
 import React, { useEffect, useState } from 'react'
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@mui/material'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+  TextField,
+} from '@mui/material'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
@@ -11,10 +19,11 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
     descriptionAr: '',
     image: null,
     status: 'true',
+    logoUrl: '',
   })
 
   useEffect(() => {
-    if (initialData) {
+    if (open && initialData) {
       setBrand({
         nameEn: initialData.name || '',
         nameAr: initialData.name || '',
@@ -22,56 +31,61 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
         descriptionAr: initialData.description || '',
         image: null,
         status: initialData.isActive ? 'true' : 'false',
+        logoUrl: initialData.logoUrl || '',
         id: initialData.id,
       })
     }
-  }, [initialData])
+  }, [open, initialData])
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target
     if (type === 'file') {
-      setBrand((prev) => ({ ...prev, [name]: files[0] }))
+      setBrand((prev) => ({ ...prev, image: files[0] }))
     } else {
       setBrand((prev) => ({ ...prev, [name]: value }))
     }
   }
 
   const handleSubmit = async () => {
-    if (brand.nameEn) {
-      try {
-        const formData = new FormData()
-        formData.append('Name', brand.nameEn)
-        formData.append('NameAr', brand.nameAr)
-        formData.append('Description', brand.descriptionEn)
-        formData.append('DescriptionAr', brand.descriptionAr)
-        formData.append('IsActive', brand.status === 'true')
-        if (brand.image instanceof File) {
-          formData.append('Image', brand.image)
-        }
-
-        const token = sessionStorage.getItem('token')
-        const response = await axios.put(
-          `http://test.smartsto0re.shop/api/Brands/${brand.id}`,
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization: `Bearer ${token}`,
-            },
-          },
-        )
-
-        toast.success('Brand updated successfully')
-        onSave(response.data)
-        onClose()
-      } catch (error) {
-        console.error(error)
-        toast.error('Error updating brand')
-      }
-    } else {
+    if (!brand.nameEn) {
       toast.error('Please fill required fields')
+      return
+    }
+
+    try {
+      const formData = new FormData()
+      formData.append('Name', brand.nameEn)
+      formData.append('NameAr', brand.nameAr)
+      formData.append('Description', brand.descriptionEn)
+      formData.append('DescriptionAr', brand.descriptionAr)
+      formData.append('IsActive', brand.status === 'true')
+
+      if (brand.image instanceof File) {
+        formData.append('Image', brand.image)
+      }
+
+      const token = sessionStorage.getItem('token')
+
+      const response = await axios.put(
+        `http://test.smartsto0re.shop/api/Brands/${brand.id}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        }
+      )
+
+      toast.success('Brand updated successfully')
+      onSave?.(response.data)
+      onClose()
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to update brand')
     }
   }
+
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -85,6 +99,7 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           value={brand.nameAr}
           onChange={handleChange}
         />
+
         <TextField
           label="Brand Name English"
           name="nameEn"
@@ -93,14 +108,23 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           value={brand.nameEn}
           onChange={handleChange}
         />
-        <TextField
-          label="Upload Image"
+
+          {brand.logoUrl?.length > 0 && (
+          <div style={{ marginBottom: '1rem' }}>
+            <img
+              src={`http://test.smartsto0re.shop${brand.logoUrl}`}
+              alt="Product"
+              style={{ width: '100px', borderRadius: '6px' }}
+            />
+          </div>
+        )}
+
+        <label style={{ display: 'block', marginTop: '1rem' }}>Upload New Image</label>
+        <input
           type="file"
-          name="image"
-          fullWidth
-          margin="dense"
+          accept="image/*"
           onChange={handleChange}
-          InputLabelProps={{ shrink: true }}
+          style={{ marginBottom: '1rem' }}
         />
         <TextField
           label="Description English"
@@ -108,23 +132,25 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           fullWidth
           margin="dense"
           multiline
-          rows={2}
+          rows={4}
           value={brand.descriptionEn}
           onChange={handleChange}
         />
+
         <TextField
           label="Description Arabic"
           name="descriptionAr"
           fullWidth
           margin="dense"
           multiline
-          rows={2}
+          rows={4}
           value={brand.descriptionAr}
           onChange={handleChange}
         />
+
         <TextField
           select
-          label="Status"
+          label="Select status"
           name="status"
           fullWidth
           margin="normal"
@@ -132,13 +158,14 @@ const EditBrandDialog = ({ open, onClose, onSave, initialData }) => {
           onChange={handleChange}
           SelectProps={{ native: true }}
         >
+          <option value="">Select status</option>
           <option value="true">Active</option>
           <option value="false">Inactive</option>
         </TextField>
       </DialogContent>
       <DialogActions>
         <Button onClick={onClose}>Cancel</Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button onClick={handleSubmit} variant="contained">
           Save Changes
         </Button>
       </DialogActions>
