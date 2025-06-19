@@ -47,6 +47,10 @@ const _nav = [
     name: 'Category',
     to: '/category',
   },
+     { component: CNavItem,
+    name: 'SubCategories',
+    to: '/SubCategories',
+  },
   {
     component: CNavItem,
     name: 'Banners',

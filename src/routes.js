@@ -6,6 +6,7 @@ const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Products = React.lazy(() => import('./views/pages/products/mainpro.js/CNavproducts'))
 const Brands = React.lazy(() => import('./views/pages/Brands/mainbrand.js/Brands.js'))
 const Category = React.lazy(() => import('./views/pages/catagory/main_catagory/Category.js'))
+const SubCategories = React.lazy(() => import('./views/pages/SubCategories/mainSubCategories.js/SubCategories'))
 const Banners = React.lazy(() => import('./views/pages/banners/Banners'))
 const Offers = React.lazy(() => import('./views/pages/offers/Offers'))
 
@@ -68,6 +69,7 @@ const routes = [
   { path: '/Products', name: 'Products', element: CNavproducts },
   { path: '/brands', name: 'Brands', element: Brands },
   { path: '/category', name: 'Category', element: Category },
+  { path: '/SubCategories', name: 'SubCategories', element: SubCategories },
   { path: '/banners', name: 'Banner', element: Banners },
   { path: '/offers', name: 'Offers', element: Offers },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
