@@ -149,7 +149,7 @@ const handleDeletesubCats = (deletedId) => {
           <tr>
             <th>Image</th>
             <th>NameEn</th>
-            <th>NameAr</th>
+            {/* <th>NameAr</th> */}
             <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -162,7 +162,7 @@ const handleDeletesubCats = (deletedId) => {
                 <img className="image" src={`http://test.smartsto0re.shop${s_C.imageUrl}`} alt={s_C.name} />
               </td>
               <td>{s_C.name}</td>
-              <td>{s_C.nameAr}</td>
+              {/* <td>{s_C.nameAr}</td> */}
               <td>
                 <span className={s_C.isActive === true ? 'active' : 'inactive'}>{s_C.isActive ? 'Active' : 'Inactive'}</span>
               </td>

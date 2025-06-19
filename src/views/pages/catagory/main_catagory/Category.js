@@ -255,7 +255,7 @@ function App() {
           <tr>
             <th>Image</th>
             <th>NameEn</th>
-            <th>NameAr</th>
+            {/* <th>NameAr</th> */}
             <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -272,7 +272,7 @@ function App() {
                 />
               </td>
               <td>{cat.name}</td>
-              <td>{cat.nameAr}</td>
+              {/* <td>{cat.nameAr}</td> */}
               <td>
                 <span className={cat.isActive ? 'active' : 'inactive'}>
                   {cat.isActive ? 'Active' : 'Inactive'}

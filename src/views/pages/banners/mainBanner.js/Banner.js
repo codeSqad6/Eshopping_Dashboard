@@ -161,7 +161,7 @@ const handleDeleteBanners = (deletedId) => {
           <tr>
             <th>Image</th>
             <th>NameEn</th>
-            <th>NameAr</th>
+            {/* <th>NameAr</th> */}
             <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -174,7 +174,7 @@ const handleDeleteBanners = (deletedId) => {
                 <img className="image" src={`http://test.smartsto0re.shop${b.imageUrl}`} alt={b.name} />
               </td>
               <td>{b.title}</td>
-              <td>{b.nameAr}</td>
+              {/* <td>{b.nameAr}</td> */}
               <td>
                 <span className={b.isActive === true ? 'active' : 'inactive'}>{b.isActive ? 'Active' : 'Inactive'}</span>
               </td>

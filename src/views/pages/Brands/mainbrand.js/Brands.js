@@ -13,18 +13,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import Category from '../../catagory/main_catagory/Category'
 import DeleteBrandDialog from '../delete_brand/DeleteDialogbrand'
 
-// const CNavproducts = () => {
-//   return (
-//     <div className="flex">
-//       <div className="flex-1 p-6">
-//         {/* <h1 className="text-2xl font-bold">Welcome TO Products page</h1> */}
-
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default CNavproducts
 function App() {
   const navigate = useNavigate()
   // const [dialogOpen, setDialogOpen] = useState(false)
@@ -161,7 +149,7 @@ const handleDeleteBrands = (deletedId) => {
           <tr>
             <th>Image</th>
             <th>NameEn</th>
-            <th>NameAr</th>
+            {/* <th>NameAr</th> */}
             <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
@@ -174,7 +162,7 @@ const handleDeleteBrands = (deletedId) => {
                 <img className="image" src={`http://test.smartsto0re.shop${b.logoUrl}`} alt={b.name} />
               </td>
               <td>{b.name}</td>
-              <td>{b.nameAr}</td>
+              {/* <td>{b.nameAr}</td> */}
               <td>
                 <span className={b.isActive === true ? 'active' : 'inactive'}>{b.isActive ? 'Active' : 'Inactive'}</span>
               </td>

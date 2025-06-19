@@ -204,7 +204,7 @@ function App() {
               <tr>
                 <th>Image</th>
                 <th>NameEn</th>
-                <th>NameAr</th>
+                {/* <th>NameAr</th> */}
                 <th>Brand</th>
                 <th>Category</th>
                 <th>Price$</th>
@@ -225,7 +225,7 @@ function App() {
                     />
                   </td>
                   <td>{p.name}</td>
-                  <td>{p.nameAr}</td>
+                  {/* <td>{p.nameAr}</td> */}
                   <td>{brands.find((b) => b.id == p.brandId)?.name || 'N/A'}</td>
                   <td>{categories.find((c) => c.id == p.categoryId)?.name || 'N/A'}</td>
                   <td>{p.price}</td>
