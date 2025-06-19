@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } 
 import { toast } from 'react-toastify'
 import axios from 'axios'
 
-const EditCatagoryDialog = ({ open, onClose, onSave, initialData }) => {
+const EditCatagoryDialog = ({ open, onClose, onSave, productData }) => {
   const [Catagory, setCatagory] = useState({
     nameEn: '',
     nameAr: '',
@@ -14,18 +14,20 @@ const EditCatagoryDialog = ({ open, onClose, onSave, initialData }) => {
   })
 
   useEffect(() => {
-    if (initialData) {
+    if (productData) {
+      console.log(productData,'productData');
+
       setCatagory({
-        nameEn: initialData.name || '',
-        nameAr: initialData.name || '',
-        descriptionEn: initialData.description || '',
-        descriptionAr: initialData.description || '',
+        nameEn: productData.name || '',
+        nameAr: productData.name || '',
+        descriptionEn: productData.description || '',
+        descriptionAr: productData.description || '',
         image: null,
-        status: initialData.isActive ? 'true' : 'false',
-        id: initialData.id,
+        status: productData.isActive ? 'true' : 'false',
+        id: productData.id,
       })
     }
-  }, [initialData])
+  }, [productData])
 
   const handleChange = (e) => {
     const { name, value, type, files } = e.target
@@ -51,7 +53,7 @@ const EditCatagoryDialog = ({ open, onClose, onSave, initialData }) => {
 
         const token = sessionStorage.getItem('token')
         const response = await axios.put(
-          `http://test.smartsto0re.shop/api/Categories/${initialData.id}`,
+          `http://test.smartsto0re.shop/api/Categories/${productData.id}`,
           formData,
           {
             headers: {
