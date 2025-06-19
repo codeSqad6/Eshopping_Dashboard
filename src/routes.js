@@ -7,7 +7,7 @@ const Products = React.lazy(() => import('./views/pages/products/mainpro.js/CNav
 const Brands = React.lazy(() => import('./views/pages/Brands/mainbrand.js/Brands.js'))
 const Category = React.lazy(() => import('./views/pages/catagory/main_catagory/Category.js'))
 const SubCategories = React.lazy(() => import('./views/pages/SubCategories/mainSubCategories.js/SubCategories'))
-const Banners = React.lazy(() => import('./views/pages/banners/Banners'))
+const Banners = React.lazy(() => import('./views/pages/banners/mainBanner.js/Banner.js'))
 const Offers = React.lazy(() => import('./views/pages/offers/Offers'))
 
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
