@@ -7,7 +7,7 @@ export default defineConfig(() => {
   return {
     base: '/Eshopping_Dashboard/',
     build: {
-      outDir: 'build',
+      outDir: 'dist',
     },
     css: {
       postcss: {
