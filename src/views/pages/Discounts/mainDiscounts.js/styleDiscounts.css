@@ -1,0 +1,110 @@
+/* ProductStyles.css */
+.container {
+  padding: 30px;
+  font-family: Arial, sans-serif;
+  width: 90%;
+}
+
+.header {
+    background: none;
+    border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+table.Discounts_table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.header p {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.Discounts_table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.Discounts_table th {
+  background-color: #4a90e2;
+  color: white;
+  padding: 10px 20px;
+  font-size: 15px;
+  border: none;
+  text-align: center;
+}
+
+.Discounts_table td {
+  padding: 10px 20px;
+  border: none;
+  font-size: 17px;
+  text-align: center;
+}
+
+.active {
+  color: green;
+  font-weight: bold;
+}
+
+.inactive {
+  color: red;
+  font-weight: bold;
+}
+
+.button {
+  margin: 5px;
+  padding: 8px 12px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.editButton {
+  background-color: #ffc107;
+  color: black;
+}
+
+.deleteButton {
+  background-color: #dc3545;
+  color: white;
+}
+
+.image {
+  width: 75px;
+  height: 75px;
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center; /* التوسيط الأفقي */
+  align-items: center;
+  gap: 0px;
+}
+
+.pageBtn {
+  margin: 0;
+  padding: 3px 10px;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+.pageBtnActive {
+    font-weight: bold;
+    background-color: #4A90E2;
+    color: white;
+  }
+
+  .pageBtnInactive {
+    font-weight: normal;
+    background-color: transparent;
+    color: black;
+  }
+
+button:not(:disabled), [type=button]:not(:disabled), [type=reset]:not(:disabled), [type=submit]:not(:disabled) {
+    cursor: pointer;
+    text-transform: capitalize;
+}

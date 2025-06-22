@@ -9,6 +9,7 @@ const Category = React.lazy(() => import('./views/pages/catagory/main_catagory/C
 const SubCategories = React.lazy(() => import('./views/pages/SubCategories/mainSubCategories.js/SubCategories'))
 const Banners = React.lazy(() => import('./views/pages/banners/mainBanner.js/Banner.js'))
 const Offers = React.lazy(() => import('./views/pages/offers/Offers'))
+const Discounts = React.lazy(() => import('./views/pages/Discounts/mainDiscounts.js/Discounts.js'))
 
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
@@ -72,6 +73,7 @@ const routes = [
   { path: '/SubCategories', name: 'SubCategories', element: SubCategories },
   { path: '/banners', name: 'Banner', element: Banners },
   { path: '/offers', name: 'Offers', element: Offers },
+  { path: '/Discounts', name: 'Discounts', element: Discounts },
   { path: '/base/breadcrumbs', name: 'Breadcrumbs', element: Breadcrumbs },
   { path: '/base/cards', name: 'Cards', element: Cards },
   { path: '/base/carousels', name: 'Carousel', element: Carousels },

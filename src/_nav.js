@@ -61,6 +61,11 @@ const _nav = [
     name: 'Offers',
     to: '/offers',
   },
+  {
+    component: CNavItem,
+    name: 'Discounts',
+    to: '/Discounts',
+  },
   // {
   //   component: CNavTitle,
   //   name: 'Components',
