@@ -94,8 +94,8 @@ const handleDeleteDiscounts = (deletedId) => {
           <tr>
             <th>NameEn</th>
             {/* <th>NameAr</th> */}
-            <th>Discount Code </th>
-            <th>Discount Percentage</th>
+            <th>Discount code </th>
+            <th>Discount percentage</th>
             <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
