@@ -1,1 +1,0 @@
-import{j as e}from"./index-m2WN69Gn.js";const l=()=>e.jsx("div",{className:"flex",children:e.jsx("div",{className:"flex-1 p-6",children:e.jsx("h1",{className:"text-2xl font-bold",children:"Welcome TO offers page"})})});export{l as default};
