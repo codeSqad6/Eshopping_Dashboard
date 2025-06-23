@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export const login = async (userData) => {
   try {
-    const response = await axios.post(`${BASE_URL}/Auth/login`, userData, {
+    const response = await axios.post(`/api/Auth/login`, userData, {
       headers: {
         'Content-Type': 'application/json',
       },
