@@ -53,7 +53,7 @@ function App() {
                },
       })
 
-      setDiscounts(response.data)
+      setDiscounts(response.data.data)
     } catch (error) {
       console.error('❌ Error fetching Discounts:', error)
       toast.error('Failed to bring the Discounts.')
@@ -93,7 +93,7 @@ const handleDeleteDiscounts = (deletedId) => {
         <thead>
           <tr>
             <th>NameEn</th>
-            {/* <th>NameAr</th> */}
+            <th>NameAr</th>
             <th>Discount code </th>
             <th>Discount percentage</th>
             <th>Status</th>
@@ -105,7 +105,7 @@ const handleDeleteDiscounts = (deletedId) => {
           {currentDiscounts.map((b) => (
             <tr key={b.id}>
               <td>{b.name}</td>
-              {/* <td>{b.nameAr}</td> */}
+              <td>{b.nameAr}</td>
                 <td>{b.discountCode}</td>
                   <td>{b.discountPercentage}</td>
               <td>

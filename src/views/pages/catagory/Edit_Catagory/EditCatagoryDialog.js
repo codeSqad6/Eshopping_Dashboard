@@ -10,6 +10,7 @@ const EditCatagoryDialog = ({ open, onClose, onSave, productData }) => {
     descriptionEn: '',
     descriptionAr: '',
     image: null,
+    imageUrl:'',
     status: 'true',
   })
 
@@ -19,10 +20,11 @@ const EditCatagoryDialog = ({ open, onClose, onSave, productData }) => {
 
       setCatagory({
         nameEn: productData.name || '',
-        nameAr: productData.name || '',
+        nameAr: productData.nameAr || '',
         descriptionEn: productData.description || '',
-        descriptionAr: productData.description || '',
+        descriptionAr: productData.descriptionAr || '',
         image: null,
+         imageUrl: productData.imageUrl || '',
         status: productData.isActive ? 'true' : 'false',
         id: productData.id,
       })
@@ -94,14 +96,23 @@ const EditCatagoryDialog = ({ open, onClose, onSave, productData }) => {
           value={Catagory.nameEn}
           onChange={handleChange}
         />
-        <TextField
-          label="Upload Image"
+       {Catagory.imageUrl && (
+  <div style={{ marginBottom: '1rem' }}>
+    <img
+      src={`http://test.smartsto0re.shop${Catagory.imageUrl}`}
+      alt="Category"
+      style={{ width: '100px', borderRadius: '6px', objectFit: 'cover' }}
+    />
+  </div>
+)}
+
+
+        <label style={{ display: 'block', marginTop: '1rem' }}>Upload New Image</label>
+        <input
           type="file"
-          name="image"
-          fullWidth
-          margin="dense"
+          accept="image/*"
           onChange={handleChange}
-          InputLabelProps={{ shrink: true }}
+          style={{ marginBottom: '1rem' }}
         />
         <TextField
           label="Description English"

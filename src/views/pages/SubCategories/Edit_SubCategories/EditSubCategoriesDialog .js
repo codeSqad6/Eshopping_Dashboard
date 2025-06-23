@@ -15,29 +15,31 @@ const EditSub_CatDialog = ({ open, onClose, onSave, initialData }) => {
     id: '',
   })
   const [categories, setCategories] = useState([])
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [categoryData] = await Promise.all([getAllCategories()])
-        setCategories(categoryData)
-      } catch (error) {
-        toast.error('Error fetching data')
-      }
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const data = await getAllCategories()
+      setCategories(data)
+    } catch (error) {
+      toast.error('Error fetching categories')
+      setCategories([])
     }
-    fetchData()
-  }, [])
+  }
+  fetchData()
+}, [])
+
+
   useEffect(() => {
     if (open && initialData) {
       setSubCat({
         nameEn: initialData.name || '',
-        nameAr: initialData.nameAr || initialData.name || '',
-        categoryId: initialData.categoryId || initialData.categoryId || '',
-        descriptionEn: initialData.descriptionEn || initialData.description || '',
-        descriptionAr: initialData.descriptionAr || initialData.description || '',
+        nameAr: initialData.nameAr ||  '',
+        categoryId: initialData.categoryId || '',
+        descriptionEn: initialData.description ||  '',
+        descriptionAr: initialData.descriptionAr || '',
         categoryId: initialData.categoryId || '',
         image: initialData.imageUrl || '',
         status: initialData.isActive ? 'true' : 'false',
-        // imageUrl: ,
         id: initialData.id || '',
       })
     }
@@ -51,17 +53,18 @@ const EditSub_CatDialog = ({ open, onClose, onSave, initialData }) => {
       setSubCat((prev) => ({ ...prev, [name]: value }))
     }
   }
-  const onFileSelected = (event) => {
-    const file = event.target.files[0]
-    if (file && file.type.startsWith('image/')) {
-      setProduct((prev) => ({
-        ...prev,
-        image: file,
-      }))
-    } else {
-      toast.error('Please select a valid image')
-    }
+const onFileSelected = (event) => {
+  const file = event.target.files[0]
+  if (file && file.type.startsWith('image/')) {
+    setSubCat((prev) => ({
+      ...prev,
+      image: file,
+    }))
+  } else {
+    toast.error('Please select a valid image')
   }
+}
+
 
   const handleSubmit = async () => {
     if (!subCat.nameEn) {

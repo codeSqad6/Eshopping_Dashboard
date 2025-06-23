@@ -27,15 +27,17 @@ const AddsubCatDialog = ({ open, onClose, onSave, initialData  }) => {
     status: '',
   })
 const [categories, setCategories] = useState([])
-  const fetchCategories = async () => {
-    try {
-      const data = await getAllCategories()
-      setCategories(data)
-      console.log('categories', categories)
-    } catch (error) {
-      console.error('Error fetching products:', error)
-    }
+const fetchCategories = async () => {
+  try {
+    const data = await getAllCategories()
+    setCategories(Array.isArray(data) ? data : [])
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    setCategories([])
   }
+}
+
+
  useEffect(() => {
     fetchCategories()
   }, [])
@@ -87,7 +89,7 @@ const handleSubmit = async () => {
       formData.append('CategoryId', subCat.categoryId)
       formData.append('Description', subCat.descriptionEn || '')
       formData.append('DescriptionAr', subCat.descriptionAr || '')
-        formData.append('CategoryId', subCat.categoryId)
+      formData.append('CategoryId', subCat.categoryId)
       formData.append('IsActive', subCat.status)
 
      

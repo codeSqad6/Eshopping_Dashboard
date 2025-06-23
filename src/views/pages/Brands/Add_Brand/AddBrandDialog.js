@@ -30,7 +30,7 @@ const AddBrandDialog = ({ open, onClose, onSave, initialData }) => {
     if (initialData) {
       setBrand({
         id: initialData.id || '',
-        nameEn: initialData.nameEn || '',
+        nameEn: initialData.name || '',
         nameAr: initialData.nameAr || '',
         descriptionEn: initialData.description || '',
         descriptionAr: initialData.descriptionAr || '',

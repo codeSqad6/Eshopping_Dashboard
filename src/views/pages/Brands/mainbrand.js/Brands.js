@@ -98,25 +98,19 @@ function App() {
   const indexOfLast = currentPage * itemsPerPage
   const indexOfFirst = indexOfLast - itemsPerPage
   const currentBrands = Brands.slice(indexOfFirst, indexOfLast)
- useEffect(() => {
+useEffect(() => {
   const fetchBrands = async () => {
     try {
-      const token = sessionStorage.getItem('token')
-      const response = await axios.get('http://test.smartsto0re.shop/api/Brands', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-               },
-      })
-
-      setBrands(response.data)
+      const response = await axios.get('http://test.smartsto0re.shop/api/Brands')
+      setBrands(response.data.data) // ✅ نأخذ فقط مصفوفة البراندات
     } catch (error) {
-      console.error('❌ Error fetching brands:', error)
-      toast.error('Failed to bring the brands.')
+      console.error('Error fetching brands:', error)
     }
   }
 
   fetchBrands()
 }, [])
+
 
   const handleAddBrands = (newBrand) => {
   setBrands((prevBrands) => [...prevBrands, newBrand])
@@ -149,20 +143,21 @@ const handleDeleteBrands = (deletedId) => {
           <tr>
             <th>Image</th>
             <th>NameEn</th>
-            {/* <th>NameAr</th> */}
+            <th>NameAr</th>
             <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {currentBrands.map((b) => (
+         {Array.isArray(Brands) &&
+  Brands.slice(0, 10).map((b) => (
             <tr key={b.id}>
               <td>
                 <img className="image" src={`http://test.smartsto0re.shop${b.logoUrl}`} alt={b.name} />
               </td>
               <td>{b.name}</td>
-              {/* <td>{b.nameAr}</td> */}
+              <td>{b.nameAr}</td>
               <td>
                 <span className={b.isActive === true ? 'active' : 'inactive'}>{b.isActive ? 'Active' : 'Inactive'}</span>
               </td>

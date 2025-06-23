@@ -28,9 +28,9 @@ const EditBannerDialog = ({ open, onClose, onSave, initialData }) => {
     if (open && initialData) {
       setBanner({
         nameEn: initialData.title || '',
-        nameAr: initialData.title || '',
+        nameAr: initialData.titleAr || '',
         descriptionEn: initialData.description || '',
-        descriptionAr: initialData.description || '',
+        descriptionAr: initialData.descriptionAr || '',
         linkurl: initialData.linkUrl || '',
         order: initialData.order || '',
         image: null,

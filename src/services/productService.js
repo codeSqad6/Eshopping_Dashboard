@@ -14,9 +14,9 @@ export const getAllProducts = async () => {
       },
     })
 
-    return response.data
+  return Array.isArray(response.data?.data) ? response.data.data : []
   } catch (error) {
     toast.error(error.response?.data || error.message)
-    throw error
+    return [] // fallback empty array
   }
 }

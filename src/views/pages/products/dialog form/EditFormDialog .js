@@ -53,9 +53,9 @@ const EditProductDialog = ({ open, onClose, initialData, onSave }) => {
 
       setProduct({
         nameEn: initialData.name || '',
-        nameAr: initialData.nameAr || initialData.name || '',
-        descriptionEn: initialData.descriptionEn || initialData.description || '',
-        descriptionAr: initialData.descriptionAr || initialData.description || '',
+        nameAr: initialData.nameAr ||'',
+        descriptionEn: initialData.description || '',
+        descriptionAr: initialData.descriptionAr ||  '',
         image: null,
         brandId: initialData.brandId || '',
         categoryId: initialData.categoryId || '',

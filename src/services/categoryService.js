@@ -4,19 +4,18 @@ import 'react-toastify/dist/ReactToastify.css'
 
 const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
+// ✅ categoryService.js
 export const getAllCategories = async () => {
   try {
     const token = sessionStorage.getItem('token')
-
     const response = await axios.get(`${BASE_URL}/Categories`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     })
-
-    return response.data
+    return Array.isArray(response.data?.data) ? response.data.data : []
   } catch (error) {
     toast.error(error.response?.data || error.message)
-    throw error
+    return [] // fallback empty array
   }
 }

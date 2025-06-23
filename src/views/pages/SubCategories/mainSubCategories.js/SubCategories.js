@@ -21,74 +21,7 @@ function App() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false)
   const [subCatToDelete, setsubCatToDelete] = useState(null)
   const [selectedsubCat, setSelectedsubCat] = useState(null)
-  // const initialsubCats = [
-  //   {
-  //     id: 1,
-  //     nameEn: 'Laptop',
-  //     nameAr: 'لابتوب',
-  //     image:
-  //       'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-  //     descriptionEn: 'descriptionEn ',
-  //     descriptionAr: 'descriptionAr',
-  //     status: 'Active',
-  //   },
-  //   {
-  //     id: 2,
-  //     nameEn: 'T-Shirt',
-  //     nameAr: 'تيشيرت',
-  //     image:
-  //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-    
-  //     descriptionEn: 'descriptionEn ',
-  //     descriptionAr: 'descriptionAr',
-  //     status: 'Inactive',
-  //   },
-  //   {
-  //     id: 3,
-  //     nameEn: 'Laptop',
-  //     nameAr: 'لابتوب',
-  //     image:
-  //       'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-    
-  //     descriptionEn: 'descriptionEn ',
-  //     descriptionAr: 'descriptionAr',
-  //     status: 'Active',
-  //   },
-  //   {
-  //     id: 4,
-  //     nameEn: 'T-Shirt',
-  //     nameAr: 'تيشيرت',
-  //     image:
-  //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-     
-  //     descriptionEn: 'descriptionEn ',
-  //     descriptionAr: 'descriptionAr',
-  //     discount: 5,
-  //     status: 'Inactive',
-  //   },
-  //   {
-  //     id: 5,
-  //     nameEn: 'Laptop',
-  //     nameAr: 'لابتوب',
-  //     image:
-  //       'https://th.bing.com/th/id/R.3a1a002c3944586115b5e3738f4c652c?rik=L%2bK%2bwiZM7VfOnw&pid=ImgRaw&r=0',
-     
-  //     descriptionEn: 'descriptionEn ',
-  //     descriptionAr: 'descriptionAr',
-  //     status: 'Active',
-  //   },
-  //   {
-  //     id: 6,
-  //     nameEn: 'T-Shirt',
-  //     nameAr: 'تيشيرت',
-  //     image:
-  //       'https://th.bing.com/th/id/R.b3c5e724216335fad832b93348f497f2?rik=Yys2kv6q5hiTYg&riu=http%3a%2f%2fimg.ltwebstatic.com%2fimages%2fpi%2f201707%2f2f%2f14990734971273770034.jpg&ehk=qug4n1YyxWOcbqD2HpJ81jNA%2bx19D5zQgMoliuvlS08%3d&risl=&pid=ImgRaw&r=0',
-  
-  //     descriptionEn: 'descriptionEn ',
-  //     descriptionAr: 'descriptionAr',
-  //     status: 'Inactive',
-  //   },
-  // ]
+ 
 
   const [subCats, setsubCats] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
@@ -98,25 +31,19 @@ function App() {
   const indexOfLast = currentPage * itemsPerPage
   const indexOfFirst = indexOfLast - itemsPerPage
   const currentsubCats = subCats.slice(indexOfFirst, indexOfLast)
- useEffect(() => {
+useEffect(() => {
   const fetchsubCats = async () => {
     try {
-      const token = sessionStorage.getItem('token') 
-      const response = await axios.get('http://test.smartsto0re.shop/api/SubCategories', {
-        headers: {
-          Authorization: `Bearer ${token}`, 
-               },
-      })
-
-      setsubCats(response.data) 
+      const response = await axios.get('http://test.smartsto0re.shop/api/SubCategories')
+      setsubCats(response.data.data) // ✅ نأخذ فقط مصفوفة البراندات
     } catch (error) {
-      console.error('❌ Error fetching subCats:', error)
-      toast.error('Failed to bring the subCats.')
+      console.error('Error fetching brands:', error)
     }
   }
 
   fetchsubCats()
 }, [])
+
 
   const handleAddsubCats = (newsubCat) => {
   setsubCats((prevsubCats) => [...prevsubCats, newsubCat])
@@ -149,20 +76,21 @@ const handleDeletesubCats = (deletedId) => {
           <tr>
             <th>Image</th>
             <th>NameEn</th>
-            {/* <th>NameAr</th> */}
+            <th>NameAr</th>
             <th>Status</th>
             <th>Edit</th>
             <th>Delete</th>
           </tr>
         </thead>
         <tbody>
-          {currentsubCats.map((s_C) => (
+                 {Array.isArray(subCats) &&
+                 subCats.slice(0, 10).map((s_C) => (
             <tr key={s_C.id}>
               <td>
                 <img className="image" src={`http://test.smartsto0re.shop${s_C.imageUrl}`} alt={s_C.name} />
               </td>
               <td>{s_C.name}</td>
-              {/* <td>{s_C.nameAr}</td> */}
+              <td>{s_C.nameAr}</td>
               <td>
                 <span className={s_C.isActive === true ? 'active' : 'inactive'}>{s_C.isActive ? 'Active' : 'Inactive'}</span>
               </td>
