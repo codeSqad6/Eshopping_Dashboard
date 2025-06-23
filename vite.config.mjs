@@ -52,7 +52,8 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig(() => {
   return {
-    base: '/',
+base: '/Eshopping_Dashboard/',
+
     build: {
       outDir: 'dist',
     },
