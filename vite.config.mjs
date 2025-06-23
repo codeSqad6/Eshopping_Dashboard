@@ -5,15 +5,13 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig(() => {
   return {
-    base: './',
+    base: '/Eshopping_Dashboard/',
     build: {
-      outDir: 'build',
+      outDir: 'dist',
     },
     css: {
       postcss: {
-        plugins: [
-          autoprefixer({}), // add options if needed
-        ],
+        plugins: [autoprefixer({})],
       },
     },
     esbuild: {
@@ -41,9 +39,7 @@ export default defineConfig(() => {
     },
     server: {
       port: 3000,
-      proxy: {
-        // https://vitejs.dev/config/server-options.html
-      },
+      proxy: {},
     },
   }
 })
