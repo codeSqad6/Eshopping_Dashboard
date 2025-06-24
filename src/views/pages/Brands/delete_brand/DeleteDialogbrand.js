@@ -1,5 +1,5 @@
 import React from 'react'
-import './DeleteBrandDialog.css'
+import './DeletebrandDialog.css'
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material'
 import axios from 'axios'
 import { toast } from 'react-toastify'
