@@ -5,7 +5,7 @@ import autoprefixer from 'autoprefixer'
 
 export default defineConfig(() => {
   return {
-    base: '/https://github.com/codeSqad6/Eshopping_Dashboard/',
+    base: '/',
     build: {
       outDir: 'dist',
     },
@@ -39,7 +39,13 @@ export default defineConfig(() => {
     },
     server: {
       port: 3000,
-      proxy: {},
+      proxy: {
+        '/api': {
+          target: 'http://test.smartsto0re.shop',
+          changeOrigin: true,
+          secure: false, // Allows HTTP in development
+        },
+      },
     },
   }
 })
