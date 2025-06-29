@@ -34,7 +34,6 @@ function App() {
   const [DiscountToDelete, setDiscountToDelete] = useState(null)
   const [selectedDiscount, setSelectedDiscount] = useState(null)
 
-
   const [Discounts, setDiscounts] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const itemsPerPage = 5
@@ -43,41 +42,38 @@ function App() {
   const indexOfLast = currentPage * itemsPerPage
   const indexOfFirst = indexOfLast - itemsPerPage
   const currentDiscounts = Discounts.slice(indexOfFirst, indexOfLast)
- useEffect(() => {
-  const fetchDiscounts = async () => {
-    try {
-      const token = sessionStorage.getItem('token')
-      const response = await axios.get('http://test.smartsto0re.shop/api/Discounts', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-               },
-      })
+  useEffect(() => {
+    const fetchDiscounts = async () => {
+      try {
+        const token = sessionStorage.getItem('token')
+        const response = await axios.get('http://test.smartsto0re.shop/api/Discounts', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
 
-      setDiscounts(response.data.data)
-    } catch (error) {
-      console.error('❌ Error fetching Discounts:', error)
-      toast.error('Failed to bring the Discounts.')
+        setDiscounts(response.data.data)
+      } catch (error) {
+        console.error('❌ Error fetching Discounts:', error)
+        toast.error('Failed to bring the Discounts.')
+      }
     }
-  }
 
-  fetchDiscounts()
-}, [])
+    fetchDiscounts()
+  }, [])
 
   const handleAddDiscounts = (newDiscount) => {
-  setDiscounts((prevDiscounts) => [...prevDiscounts, newDiscount])
-}
-
+    setDiscounts((prevDiscounts) => [...prevDiscounts, newDiscount])
+  }
 
   const handleEditDiscounts = (updatedDiscount) => {
     setDiscounts(Discounts.map((b) => (b.id === updatedDiscount.id ? updatedDiscount : b)))
   }
-const handleDeleteDiscounts = (deletedId) => {
-  setDiscounts((prev) => prev.filter((b) => b.id !== deletedId))
-  setDeleteDialogOpen(false)
-  setDiscountToDelete(null)
-}
-
-
+  const handleDeleteDiscounts = (deletedId) => {
+    setDiscounts((prev) => prev.filter((b) => b.id !== deletedId))
+    setDeleteDialogOpen(false)
+    setDiscountToDelete(null)
+  }
 
   console.log(currentDiscounts, 'currentDiscounts')
 
@@ -86,7 +82,7 @@ const handleDeleteDiscounts = (deletedId) => {
       <div className="header">
         <p>Add a New Discounts</p>
         <Button variant="contained" color="primary" onClick={() => setDialogOpen(true)}>
-         Add Discount
+          Add Discount
         </Button>
       </div>
       <table className="Discounts_table">
@@ -106,10 +102,12 @@ const handleDeleteDiscounts = (deletedId) => {
             <tr key={b.id}>
               <td>{b.name}</td>
               <td>{b.nameAr}</td>
-                <td>{b.discountCode}</td>
-                  <td>{b.discountPercentage}</td>
+              <td>{b.discountCode}</td>
+              <td>{b.discountPercentage}</td>
               <td>
-                <span className={b.isActive === true ? 'active' : 'inactive'}>{b.isActive ? 'Active' : 'Inactive'}</span>
+                <span className={b.isActive === true ? 'active' : 'inactive'}>
+                  {b.isActive ? 'Active' : 'Inactive'}
+                </span>
               </td>
               <td>
                 <button
@@ -176,14 +174,13 @@ const handleDeleteDiscounts = (deletedId) => {
         onSave={handleEditDiscounts}
         initialData={selectedDiscount}
       />
-    <DeleteDiscountDialog
-  open={deleteDialogOpen}
-  className="delete-dialog"
-  onClose={() => setDeleteDialogOpen(false)}
-  onConfirm={handleDeleteDiscounts}
-  Discount={DiscountToDelete}
-/>
-
+      <DeleteDiscountDialog
+        open={deleteDialogOpen}
+        className="delete-dialog"
+        onClose={() => setDeleteDialogOpen(false)}
+        onConfirm={handleDeleteDiscounts}
+        Discount={DiscountToDelete}
+      />
     </div>
   )
 }

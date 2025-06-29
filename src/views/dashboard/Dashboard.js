@@ -1,4 +1,3 @@
-
 import React from 'react'
 import classNames from 'classnames'
 import {
@@ -36,7 +35,7 @@ import {
   cilPeople,
   cilCloudDownload,
   // cilShop,
-  cilHome
+  cilHome,
 } from '@coreui/icons'
 
 import avatar1 from 'src/assets/images/avatars/1.jpg'
@@ -87,7 +86,7 @@ const Dashboard = () => {
       amount: '$245.99',
       status: {
         text: 'Processing',
-        color: 'info'
+        color: 'info',
       },
       payment: { name: 'Visa', icon: cibCcVisa },
       items: 3,
@@ -102,7 +101,7 @@ const Dashboard = () => {
       amount: '$189.50',
       status: {
         text: 'Shipped',
-        color: 'success'
+        color: 'success',
       },
       payment: { name: 'Mastercard', icon: cibCcMastercard },
       items: 5,
@@ -117,7 +116,7 @@ const Dashboard = () => {
       amount: '$542.75',
       status: {
         text: 'Delivered',
-        color: 'primary'
+        color: 'primary',
       },
       payment: { name: 'PayPal', icon: cibCcPaypal },
       items: 7,
@@ -132,7 +131,7 @@ const Dashboard = () => {
       amount: '$321.20',
       status: {
         text: 'Cancelled',
-        color: 'danger'
+        color: 'danger',
       },
       payment: { name: 'Amex', icon: cibCcAmex },
       items: 2,
@@ -147,7 +146,7 @@ const Dashboard = () => {
       amount: '$98.99',
       status: {
         text: 'Processing',
-        color: 'info'
+        color: 'info',
       },
       payment: { name: 'Apple Pay', icon: cibCcApplePay },
       items: 1,
@@ -159,7 +158,6 @@ const Dashboard = () => {
       {/* <WidgetsDropdown className="mb-4" /> */}
 
       <CCard className="mb-4">
-    
         <CCardFooter>
           <CRow
             xs={{ cols: 1, gutter: 4 }}
@@ -234,9 +232,7 @@ const Dashboard = () => {
       <CCard className="mb-4">
         <CCardHeader>
           <CRow>
-            <CCol sm={5}>
-              Recent Orders
-            </CCol>
+            <CCol sm={5}>Recent Orders</CCol>
             <CCol sm={7} className="d-none d-md-block">
               <CButton color="primary" className="float-end">
                 View All Orders
@@ -252,9 +248,7 @@ const Dashboard = () => {
                   <CIcon icon={cilPeople} />
                 </CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary">Customer</CTableHeaderCell>
-                <CTableHeaderCell className="bg-body-tertiary text-center">
-                  Amount
-                </CTableHeaderCell>
+                <CTableHeaderCell className="bg-body-tertiary text-center">Amount</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary">Status</CTableHeaderCell>
                 <CTableHeaderCell className="bg-body-tertiary text-center">
                   Payment
@@ -273,23 +267,18 @@ const Dashboard = () => {
                     <div className="small text-body-secondary text-nowrap">
                       <span className={item.customer.type === 'VIP' ? 'text-warning' : ''}>
                         {item.customer.type}
-                      </span> | Ordered: {item.customer.ordered}
+                      </span>{' '}
+                      | Ordered: {item.customer.ordered}
                     </div>
                   </CTableDataCell>
-                  <CTableDataCell className="text-center fw-semibold">
-                    {item.amount}
-                  </CTableDataCell>
+                  <CTableDataCell className="text-center fw-semibold">{item.amount}</CTableDataCell>
                   <CTableDataCell>
-                    <span className={`badge bg-${item.status.color}`}>
-                      {item.status.text}
-                    </span>
+                    <span className={`badge bg-${item.status.color}`}>{item.status.text}</span>
                   </CTableDataCell>
                   <CTableDataCell className="text-center">
                     <CIcon size="xl" icon={item.payment.icon} />
                   </CTableDataCell>
-                  <CTableDataCell className="text-center">
-                    {item.items}
-                  </CTableDataCell>
+                  <CTableDataCell className="text-center">{item.items}</CTableDataCell>
                 </CTableRow>
               ))}
             </CTableBody>
